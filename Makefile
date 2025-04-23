@@ -11,6 +11,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 LIBFT_OBJS = $(shell find $(LIBFT_DIR) -name '*.o')
 
 TEST_NAME = test_malloc
+TEST_SCRIPT = ./run_test.sh
 TEST_DIR = tests/
 TEST_SRC = $(TEST_DIR)test_malloc.c
 TEST_OBJ = $(OBJ_DIR)test_malloc.o
@@ -23,6 +24,7 @@ RM = rm -rf
 # === COULEURS ===
 
 GREEN       = \033[0;32m
+MAGENTA     = \033[1;35m
 YELLOW      = \033[1;33m
 CYAN        = \033[1;36m
 RED         = \033[0;31m
@@ -65,6 +67,12 @@ test: $(TEST_OBJ) $(LIBFT) $(NAME) link
 run: test
 	@echo "$(CYAN)▶️  Exécution du test :$(RESET)"
 	@LD_LIBRARY_PATH=. ./$(TEST_NAME)
+
+script: test
+	@echo "$(MAGENTA)🔍 Exécution avec Valgrind :$(RESET)"
+	@$(TEST_SCRIPT) $(TEST_NAME)
+
+run_all: run script
 
 # === CLEANUP ===
 
