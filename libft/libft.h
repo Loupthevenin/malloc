@@ -6,7 +6,7 @@
 /*   By: ltheveni <ltheveni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 16:12:37 by ltheveni          #+#    #+#             */
-/*   Updated: 2024/12/24 22:09:24 by ltheveni         ###   ########.fr       */
+/*   Updated: 2025/04/23 12:04:54 by ltheveni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void				ft_putstr_fd(char *s, int fd);
 void				ft_putendl_fd(char *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
 char				*get_next_line(int fd);
+int					ft_printf(const char *s, ...);
 
 typedef struct s_list
 {

@@ -8,7 +8,7 @@ INCLUDES = -I includes -I libft
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
-LIBFT_OBJS = $(LIBFT_DIR)/*.o
+LIBFT_OBJS = $(shell find $(LIBFT_DIR) -name '*.o')
 
 TEST_NAME = test_malloc
 TEST_DIR = tests/
@@ -37,8 +37,8 @@ OBJS = $(addprefix $(OBJ_DIR), $(SRC_FILES:.c=.o))
 
 all: $(LIBFT) $(NAME) link
 
-$(NAME): $(OBJS)
-	@$(CC) -shared -o $(NAME) $(OBJS) $(LIBFT) -L $(LIBFT_DIR) -lft
+$(NAME): $(OBJS) $(LIBFT)
+	@$(CC) -shared -o $(NAME) $(OBJS) $(LIBFT_OBJS)
 	@echo "$(GREEN)✅ Bibliothèque partagée $(NAME) créée$(RESET)"
 
 link:

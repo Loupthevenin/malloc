@@ -6,7 +6,7 @@
 #    By: ltheveni <ltheveni@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/12 18:30:28 by ltheveni          #+#    #+#              #
-#    Updated: 2025/04/22 08:27:20 by ltheveni         ###   ########.fr        #
+#    Updated: 2025/04/23 12:03:38 by ltheveni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,9 +69,8 @@ RM = rm -f
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	@$(LIB) $(NAME) $(OBJS)
-	@$(MAKE) printf
+$(NAME): $(OBJS) $(OBJS_PRINTF)
+	@$(LIB) $(NAME) $(OBJS) $(OBJS_PRINTF)
 	@echo "\nCompiled"
 
 bonus: $(OBJS_BONUS)
@@ -79,18 +78,14 @@ bonus: $(OBJS_BONUS)
 	@$(MAKE) printf
 	@echo "\nCompiled"
 
-printf: $(OBJS_PRINTF)
-	@$(LIB) $(NAME) $(OBJS_PRINTF)
-	@echo "add printf to lib"
-
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 clean:
 	$(RM) $(OBJS) $(OBJS_BONUS) $(OBJS_PRINTF)
 
-fclean:
-	$(RM) $(NAME) $(OBJS) $(OBJS_BONUS) $(OBJS_PRINTF)
+fclean: clean
+	$(RM) $(NAME)
 
 re: fclean all
 
