@@ -3,7 +3,10 @@
 NAME = libft_malloc_$(HOSTTYPE).so
 SRCS_DIR = srcs/
 OBJ_DIR = obj/
-SRC_FILES = malloc.c
+SRC_FILES = malloc.c\
+			free.c\
+			realloc.c\
+			show_alloc_mem.c
 INCLUDES = -I includes -I libft
 
 LIBFT_DIR = libft
@@ -17,7 +20,7 @@ TEST_SRC = $(TEST_DIR)test_malloc.c
 TEST_OBJ = $(OBJ_DIR)test_malloc.o
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fPIC
 AR = ar rc
 RM = rm -rf
 

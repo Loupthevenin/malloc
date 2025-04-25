@@ -1,6 +1,6 @@
 #include "../includes/malloc.h"
 
-static t_block	*g_head = NULL;
+t_block	*g_head = NULL;
 
 void	init_block(size_t size, t_block **block)
 {
@@ -15,6 +15,7 @@ void	*malloc(size_t size)
 	t_block	*block;
 	t_block	*tmp;
 
+	ft_putstr_fd("CUSTOM MALLOC\n", 1);
 	total_size = size + sizeof(t_block);
 	block = mmap(NULL, total_size, PROT_READ | PROT_WRITE,
 			MAP_ANON | MAP_PRIVATE, -1, 0);
