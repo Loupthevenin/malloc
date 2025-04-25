@@ -4,7 +4,7 @@ void	show_alloc_mem(void)
 {
 	t_block	*current;
 
-	current = g_head - 1;
+	current = g_head_tiny - 1;
 	while (current)
 	{
 		// Block

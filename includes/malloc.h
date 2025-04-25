@@ -6,6 +6,18 @@
 # include <stdlib.h>
 # include <sys/mman.h>
 
+# ifdef __linux__
+#  define get_page_size() sysconf(_SC_PAGESIZE)
+# else
+#  define get_page_size() getpagesize()
+# endif
+
+# define TINY_SIZE 128
+# define SMALL_SIZE 1024
+# define LARGE_SIZE 1025
+
+# define BLOCK_SIZE sizeof(t_block)
+
 typedef struct s_block
 {
 	size_t			size;
@@ -13,7 +25,10 @@ typedef struct s_block
 	struct s_block	*next;
 }					t_block;
 
-extern t_block		*g_head;
+// TODO only one global
+extern t_block		*g_head_tiny;
+extern t_block		*g_head_small;
+extern t_block		*g_head_large;
 
 void				free(void *ptr);
 void				*malloc(size_t size);
