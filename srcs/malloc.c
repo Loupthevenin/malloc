@@ -73,6 +73,16 @@ int	handle_region(t_block **block, size_t size, int flags)
 	return (0);
 }
 
+static int	which_zone(size_t size)
+{
+	if (size <= TINY_SIZE)
+		return (TINY);
+	else if (size <= SMALL_SIZE)
+		return (SMALL);
+	else
+		return (LARGE);
+}
+
 void	*malloc(size_t size)
 {
 	t_block	*block;
@@ -80,17 +90,6 @@ void	*malloc(size_t size)
 	print_custom("MALLOC");
 	print_size(size);
 	block = NULL;
-	if (size <= TINY_SIZE)
-	{
-		handle_region(&block, size, TINY);
-	}
-	else if (size <= SMALL_SIZE)
-	{
-		handle_region(&block, size, SMALL);
-	}
-	else
-	{
-		handle_region(&block, size, LARGE);
-	}
+	handle_region(&block, size, which_zone(size));
 	return ((void *)(block + 1));
 }
