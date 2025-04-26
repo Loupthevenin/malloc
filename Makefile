@@ -6,7 +6,8 @@ OBJ_DIR = obj/
 SRC_FILES = malloc.c\
 			free.c\
 			realloc.c\
-			show_alloc_mem.c
+			show_alloc_mem.c\
+			utils.c
 INCLUDES = -I includes -I libft
 
 LIBFT_DIR = libft

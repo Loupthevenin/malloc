@@ -1,0 +1,47 @@
+#ifndef LIBFT_MALLOC_H
+# define LIBFT_MALLOC_H
+
+# include "../libft/ft_printf/ft_printf.h"
+# include "../libft/libft.h"
+# include <stdlib.h>
+# include <sys/mman.h>
+
+# ifdef __linux__
+#  define get_page_size() sysconf(_SC_PAGESIZE)
+# else
+#  define get_page_size() getpagesize()
+# endif
+
+# define TINY_SIZE 128
+# define SMALL_SIZE 1024
+# define LARGE_SIZE 1025
+
+# define TINY 1
+# define SMALL 2
+# define LARGE 3
+
+# define BLOCK_SIZE sizeof(t_block)
+# define ZONE_SIZE sizeof(t_zone)
+
+typedef struct s_block
+{
+	size_t			size;
+	int				is_free;
+	struct s_block	*next;
+}					t_block;
+
+typedef struct s_zone
+{
+	int				zone_type;
+	t_block			*blocks;
+	struct s_zone	*next;
+}					t_zone;
+
+extern t_zone		*g_zone;
+
+void				free(void *ptr);
+void				*malloc(size_t size);
+void				*realloc(void *ptr, size_t size);
+void				show_alloc_mem(void);
+
+#endif
