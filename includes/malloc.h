@@ -12,11 +12,18 @@
 #  define get_page_size() getpagesize()
 # endif
 
+// TODO add colors
+
 # define TINY_SIZE 128
 # define SMALL_SIZE 1024
 # define LARGE_SIZE 1025
 
+# define TINY 1
+# define SMALL 2
+# define LARGE 3
+
 # define BLOCK_SIZE sizeof(t_block)
+# define ZONE_SIZE sizeof(t_zone)
 
 typedef struct s_block
 {
@@ -25,10 +32,14 @@ typedef struct s_block
 	struct s_block	*next;
 }					t_block;
 
-// TODO only one global
-extern t_block		*g_head_tiny;
-extern t_block		*g_head_small;
-extern t_block		*g_head_large;
+typedef struct s_zone
+{
+	int				zone_type;
+	t_block			*blocks;
+	struct s_zone	*next;
+}					t_zone;
+
+extern t_zone		*g_zone;
 
 void				free(void *ptr);
 void				*malloc(size_t size);
