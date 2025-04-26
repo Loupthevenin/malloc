@@ -7,6 +7,7 @@ void	init_block(size_t size, t_block **block)
 	(*block)->next = NULL;
 }
 
+// update with ZONE_SIZE
 size_t	get_zone_size(size_t max_alloc_size)
 {
 	size_t	page_size;
@@ -18,6 +19,8 @@ size_t	get_zone_size(size_t max_alloc_size)
 	total_zone = total_max_alloc * 100;
 	return (((total_zone + page_size - 1) / page_size) * page_size);
 }
+
+// new get_block_size;
 
 void	print_custom(char *message)
 {
