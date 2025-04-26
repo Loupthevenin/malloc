@@ -11,6 +11,9 @@ void	print_memory(size_t size);
 
 // UTILS
 void	init_block(size_t size, t_block **block);
+int		which_zone(size_t size);
+t_zone	*find_zone(int zone_type);
+t_block	*find_free_block(t_zone *zone, size_t size);
 size_t	get_block_size(size_t max_alloc_size);
 size_t	get_zone_size(size_t max_alloc_size);
 

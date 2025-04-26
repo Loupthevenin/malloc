@@ -7,6 +7,44 @@ void	init_block(size_t size, t_block **block)
 	(*block)->next = NULL;
 }
 
+int	which_zone(size_t size)
+{
+	if (size <= TINY_SIZE)
+		return (TINY);
+	else if (size <= SMALL_SIZE)
+		return (SMALL);
+	else
+		return (LARGE);
+}
+
+t_zone	*find_zone(int zone_type)
+{
+	t_zone	*tmp;
+
+	tmp = g_zone;
+	while (tmp)
+	{
+		if (tmp->zone_type == zone_type)
+			break ;
+		tmp = tmp->next;
+	}
+	return (tmp);
+}
+
+t_block	*find_free_block(t_zone *zone, size_t size)
+{
+	t_block	*current;
+
+	current = zone->blocks;
+	while (current)
+	{
+		if (current->is_free && current->size >= size)
+			return (current);
+		current = current->next;
+	}
+	return (NULL);
+}
+
 size_t	get_zone_size(size_t max_alloc_size)
 {
 	size_t	page_size;
