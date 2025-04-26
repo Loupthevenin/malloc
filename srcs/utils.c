@@ -7,7 +7,6 @@ void	init_block(size_t size, t_block **block)
 	(*block)->next = NULL;
 }
 
-// update with ZONE_SIZE
 size_t	get_zone_size(size_t max_alloc_size)
 {
 	size_t	page_size;
@@ -15,12 +14,22 @@ size_t	get_zone_size(size_t max_alloc_size)
 	size_t	total_zone;
 
 	page_size = get_page_size();
-	total_max_alloc = max_alloc_size + BLOCK_SIZE;
-	total_zone = total_max_alloc * 100;
+	total_max_alloc = (max_alloc_size + BLOCK_SIZE) * MIN_BLOCKS_PER_ZONE;
+	total_zone = total_max_alloc + ZONE_SIZE;
 	return (((total_zone + page_size - 1) / page_size) * page_size);
 }
 
-// new get_block_size;
+size_t	get_block_size(size_t max_alloc_size)
+{
+	size_t	page_size;
+	size_t	total_max_alloc;
+	size_t	total_block;
+
+	page_size = get_page_size();
+	total_max_alloc = max_alloc_size + BLOCK_SIZE;
+	total_block = total_max_alloc * MIN_BLOCKS_PER_ZONE;
+	return (((total_block + page_size - 1) / page_size) * page_size);
+}
 
 void	print_custom(char *message)
 {

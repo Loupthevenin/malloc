@@ -12,6 +12,10 @@
 #  define get_page_size() getpagesize()
 # endif
 
+// Each zone must contain at least 100 allocations.
+# define MIN_BLOCKS_PER_ZONE 100
+
+// Default values n, m
 # define TINY_SIZE 128
 # define SMALL_SIZE 1024
 # define LARGE_SIZE 1025
