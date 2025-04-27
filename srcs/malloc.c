@@ -2,6 +2,7 @@
 
 t_zone			*g_zone = NULL;
 
+// TODO probleme d'alignement
 static void	*get_memory(size_t size)
 {
 	print_memory(size);
@@ -15,13 +16,7 @@ static void	create_zone(t_zone **tmp, size_t size, int zone_type)
 	size_t	total_size;
 	t_block	*block;
 
-	total_size = 0;
-	if (zone_type == TINY)
-		total_size = get_zone_size(TINY_SIZE);
-	else if (zone_type == SMALL)
-		total_size = get_zone_size(SMALL_SIZE);
-	else if (zone_type == LARGE)
-		total_size = size + BLOCK_SIZE;
+	total_size = get_size(size, zone_type, 0);
 	*tmp = get_memory(total_size);
 	if (*tmp == MAP_FAILED)
 	{
@@ -42,17 +37,35 @@ static void	create_zone(t_zone **tmp, size_t size, int zone_type)
 
 static t_block	*create_block_in_zone(t_zone *zone, size_t size)
 {
-	t_block	*current;
 	t_block	*result;
 
 	if (zone->used_size + BLOCK_SIZE + size > zone->zone_size)
 		return (NULL);
 	result = (t_block *)((char *)zone + zone->used_size);
 	init_block(size, &result);
-	current = zone->blocks;
-	while (current->next)
-		current = current->next;
-	current->next = result;
+	add_block_to_zone(zone, result);
+	zone->used_size += BLOCK_SIZE + size;
+	return (result);
+}
+
+// TODO manage error failed
+static t_block	*allocate_block_zone(t_zone *zone, size_t size, int zone_type)
+{
+	t_block	*result;
+	void	*extra_mem;
+	size_t	total_size;
+
+	total_size = get_size(size, zone_type, 1);
+	extra_mem = get_memory(total_size);
+	if (extra_mem == MAP_FAILED)
+	{
+		perror("mmap");
+		return (NULL);
+	}
+	result = (t_block *)extra_mem;
+	init_block(size, &result);
+	add_block_to_zone(zone, result);
+	zone->zone_size += total_size;
 	zone->used_size += BLOCK_SIZE + size;
 	return (result);
 }
@@ -81,10 +94,9 @@ void	*malloc(size_t size)
 		if (!block)
 		{
 			block = create_block_in_zone(zone, size);
-			// TODO gerer le cas ou on a plus de place donc new mmap;
 			if (!block)
 			{
-				return (NULL);
+				block = allocate_block_zone(zone, size, zone_type);
 			}
 		}
 		else

@@ -45,6 +45,21 @@ t_block	*find_free_block(t_zone *zone, size_t size)
 	return (NULL);
 }
 
+void	add_block_to_zone(t_zone *zone, t_block *new_block)
+{
+	t_block	*current;
+
+	current = zone->blocks;
+	if (!current)
+		zone->blocks = new_block;
+	else
+	{
+		while (current->next)
+			current = current->next;
+		current->next = new_block;
+	}
+}
+
 size_t	get_zone_size(size_t max_alloc_size)
 {
 	size_t	page_size;
@@ -67,6 +82,25 @@ size_t	get_block_size(size_t max_alloc_size)
 	total_max_alloc = max_alloc_size + BLOCK_SIZE;
 	total_block = total_max_alloc * MIN_BLOCKS_PER_ZONE;
 	return (((total_block + page_size - 1) / page_size) * page_size);
+}
+
+size_t	get_size(size_t size, int zone_type, int is_block)
+{
+	size_t	result;
+
+	if (zone_type == TINY)
+		if (!is_block)
+			result = get_zone_size(TINY_SIZE);
+		else
+			result = get_block_size(TINY_SIZE);
+	else if (zone_type == SMALL)
+		if (!is_block)
+			result = get_zone_size(SMALL_SIZE);
+		else
+			result = get_block_size(SMALL_SIZE);
+	else if (zone_type == LARGE)
+		result = size + BLOCK_SIZE;
+	return (result);
 }
 
 void	print_custom(char *message)
