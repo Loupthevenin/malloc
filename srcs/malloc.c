@@ -15,6 +15,7 @@ static void	create_zone(t_zone **tmp, size_t size, int zone_type)
 	size_t	total_size;
 	t_block	*block;
 
+	total_size = 0;
 	if (zone_type == TINY)
 		total_size = get_zone_size(TINY_SIZE);
 	else if (zone_type == SMALL)
@@ -28,6 +29,7 @@ static void	create_zone(t_zone **tmp, size_t size, int zone_type)
 		return ;
 	}
 	(*tmp)->zone_type = zone_type;
+	(*tmp)->zone_size = total_size;
 	(*tmp)->blocks = NULL;
 	(*tmp)->next = g_zone;
 	g_zone = *tmp;
@@ -35,20 +37,23 @@ static void	create_zone(t_zone **tmp, size_t size, int zone_type)
 	block = (t_block *)((char *)*tmp + ZONE_SIZE);
 	init_block(size, &block);
 	(*tmp)->blocks = block;
+	(*tmp)->used_size = ZONE_SIZE + BLOCK_SIZE + size;
 }
 
-// TODO verif si encore assez de memoire;
 static t_block	*create_block_in_zone(t_zone *zone, size_t size)
 {
 	t_block	*current;
 	t_block	*result;
 
+	if (zone->used_size + BLOCK_SIZE + size > zone->zone_size)
+		return (NULL);
+	result = (t_block *)((char *)zone + zone->used_size);
+	init_block(size, &result);
 	current = zone->blocks;
 	while (current->next)
 		current = current->next;
-	result = (t_block *)((char *)current + BLOCK_SIZE + current->size);
-	init_block(size, &result);
 	current->next = result;
+	zone->used_size += BLOCK_SIZE + size;
 	return (result);
 }
 
@@ -76,11 +81,20 @@ void	*malloc(size_t size)
 		if (!block)
 		{
 			block = create_block_in_zone(zone, size);
+			// TODO gerer le cas ou on a plus de place donc new mmap;
 			if (!block)
+			{
 				return (NULL);
+			}
 		}
 		else
+		{
 			block->is_free = 0;
+			zone->used_size += BLOCK_SIZE + size;
+		}
 	}
+	ft_putstr_fd("used_size: ", 1);
+	ft_putnbr_fd(zone->used_size, 1);
+	ft_putstr_fd("\n", 1);
 	return ((void *)(block + 1));
 }

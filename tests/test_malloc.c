@@ -14,6 +14,15 @@ static void	print_display_test(int i)
 	ft_putstr_fd("\n", 1);
 }
 
+static void	print_config(void)
+{
+	ft_putstr_fd("BLOCK_SIZE: ", 1);
+	ft_putnbr_fd(BLOCK_SIZE, 1);
+	ft_putstr_fd(", ZONE_SIZE: ", 1);
+	ft_putnbr_fd(ZONE_SIZE, 1);
+	ft_putendl_fd("", 1);
+}
+
 void	first_test(void)
 {
 	void	*ptr1;
@@ -53,9 +62,10 @@ void	second_test(void)
 int	main(void)
 {
 	print_display_tester();
-	print_display_test(1);
-	first_test();
+	/* print_display_test(1); */
+	/* first_test(); */
 	print_display_test(2);
+	print_config();
 	second_test();
 	return (0);
 }
