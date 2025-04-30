@@ -47,7 +47,7 @@ void	second_test(void)
 	char	*a;
 
 	i = 0;
-	max_alloc = 110;
+	max_alloc = 500;
 	while (i < max_alloc)
 	{
 		a = malloc(TINY_SIZE);
@@ -67,5 +67,6 @@ int	main(void)
 	print_display_test(2);
 	print_config();
 	second_test();
+	show_alloc_mem();
 	return (0);
 }

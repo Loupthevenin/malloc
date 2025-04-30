@@ -103,6 +103,16 @@ size_t	get_size(size_t size, int zone_type, int is_block)
 	return (result);
 }
 
+void	*align_ptr(void *ptr)
+{
+	uintptr_t	p;
+	uintptr_t	result;
+
+	p = (uintptr_t)ptr;
+	result = (p + (ALIGNMENT - 1)) & ~(ALIGNMENT - 1);
+	return ((void *)result);
+}
+
 void	print_custom(char *message)
 {
 	ft_putstr_fd(GREEN "CUSTOM ", 1);
