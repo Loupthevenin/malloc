@@ -30,7 +30,7 @@ static void	create_zone(t_zone **tmp, size_t size, int zone_type)
 	// on donne de la memoire a block de telle sorte a ce qu'on soit juste apres zone;
 	block = (t_block *)((char *)*tmp + ZONE_SIZE);
 	block = (t_block *)align_ptr(block);
-	init_block(size, &block);
+	init_block(tmp, size, &block);
 	(*tmp)->blocks = block;
 	(*tmp)->used_size = ZONE_SIZE + BLOCK_SIZE + size;
 }
@@ -43,7 +43,7 @@ static t_block	*create_block_in_zone(t_zone *zone, size_t size)
 		return (NULL);
 	result = (t_block *)((char *)zone + zone->used_size);
 	result = (t_block *)align_ptr(result);
-	init_block(size, &result);
+	init_block(&zone, size, &result);
 	add_block_to_zone(zone, result);
 	zone->used_size += BLOCK_SIZE + size;
 	return (result);

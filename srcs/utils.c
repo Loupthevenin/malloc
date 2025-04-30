@@ -1,10 +1,11 @@
 #include "../includes/malloc.h"
 
-void	init_block(size_t size, t_block **block)
+void	init_block(t_zone **current_zone, size_t size, t_block **block)
 {
 	(*block)->size = size;
 	(*block)->is_free = 0;
 	(*block)->next = NULL;
+	(*block)->zone = *current_zone;
 }
 
 int	which_zone(size_t size)
@@ -102,7 +103,7 @@ size_t	get_size(size_t size, int zone_type, int is_block)
 		else
 			result = get_block_size(SMALL_SIZE);
 	else if (zone_type == LARGE)
-		result = size + BLOCK_SIZE;
+		result = size + BLOCK_SIZE + ZONE_SIZE;
 	return (result);
 }
 
