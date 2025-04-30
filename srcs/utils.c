@@ -17,18 +17,19 @@ int	which_zone(size_t size)
 		return (LARGE);
 }
 
-t_zone	*find_zone(int zone_type)
+t_zone	*find_zone(int zone_type, size_t size)
 {
 	t_zone	*tmp;
 
 	tmp = g_zone;
 	while (tmp)
 	{
-		if (tmp->zone_type == zone_type)
-			break ;
+		if (tmp->zone_type == zone_type && tmp->zone_size >= tmp->used_size
+			+ size + BLOCK_SIZE)
+			return (tmp);
 		tmp = tmp->next;
 	}
-	return (tmp);
+	return (NULL);
 }
 
 t_block	*find_free_block(t_zone *zone, size_t size)
@@ -72,6 +73,7 @@ size_t	get_zone_size(size_t max_alloc_size)
 	return (((total_zone + page_size - 1) / page_size) * page_size);
 }
 
+// HACK: delete ?
 size_t	get_block_size(size_t max_alloc_size)
 {
 	size_t	page_size;
@@ -84,6 +86,7 @@ size_t	get_block_size(size_t max_alloc_size)
 	return (((total_block + page_size - 1) / page_size) * page_size);
 }
 
+// HACK: change ?
 size_t	get_size(size_t size, int zone_type, int is_block)
 {
 	size_t	result;
