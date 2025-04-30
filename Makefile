@@ -17,8 +17,9 @@ LIBFT_OBJS = $(shell find $(LIBFT_DIR) -name '*.o')
 TEST_NAME = test_malloc
 TEST_SCRIPT = ./run_test.sh
 TEST_DIR = tests/
-TEST_SRC = $(TEST_DIR)test_malloc.c
-TEST_OBJ = $(OBJ_DIR)test_malloc.o
+TEST_SRC = $(wildcard $(TEST_DIR)*.c)
+TEST_OBJ = $(patsubst $(TEST_DIR)%.c, $(OBJ_DIR)%.o, $(TEST_SRC))
+TEST_HEADERS = $(wildcard $(TEST_DIR)*.h)
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -fPIC
@@ -60,7 +61,7 @@ $(OBJ_DIR)%.o: $(SRCS_DIR)%.c
 
 # === TEST ===
 
-$(TEST_OBJ): $(TEST_SRC)
+$(OBJ_DIR)%.o: $(TEST_DIR)%.c $(TEST_HEADERS)
 	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 

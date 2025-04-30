@@ -1,29 +1,27 @@
-#include "../includes/libft_malloc.h"
+#include "test.h"
 
-///////////////////////////////////////////
-static void	print_display_tester(void)
+void	test_malloc(void)
 {
-	ft_printf("==========================");
-	ft_printf("TEST MALLOC");
-	ft_printf("==========================\n");
+	void	*ptr;
+	char	*mem;
+
+	ptr = malloc(TINY_SIZE);
+	assert_ptr_not_null(ptr, "malloc(TINY_SIZE)");
+	ptr = malloc(0);
+	assert_ptr_not_null(ptr,
+						"malloc(0) should still return (non-null per POSIX");
+	mem = malloc(64);
+	assert_ptr_not_null(ptr, "malloc(64)");
+	ft_memset(mem, 'A', 64);
 }
 
-static void	print_display_test(int i)
-{
-	ft_putstr_fd("***TEST*** ", 1);
-	ft_putnbr_fd(i, 1);
-	ft_putstr_fd("\n", 1);
-}
-
-static void	print_config(void)
-{
-	ft_putstr_fd("BLOCK_SIZE: ", 1);
-	ft_putnbr_fd(BLOCK_SIZE, 1);
-	ft_putstr_fd(", ZONE_SIZE: ", 1);
-	ft_putnbr_fd(ZONE_SIZE, 1);
-	ft_putendl_fd("", 1);
-}
-///////////////////////////////////////////
+// negative_number flag -Werror
+/* void	negative_number(void) */
+/* { */
+/* 	void	*ptr; */
+/**/
+/* 	ptr = malloc(-1); */
+/* } */
 
 void	first_test(void)
 {
@@ -59,23 +57,4 @@ void	loop_malloc(size_t size)
 	ft_putstr_fd("total malloc: ", 1);
 	ft_putnbr_fd(i, 1);
 	ft_putendl_fd("", 1);
-}
-
-// TODO: loop_random size malloc
-
-// TODO: unitest
-int	main(void)
-{
-	void	*ptr;
-
-	print_display_tester();
-	print_display_test(1);
-	/* first_test(); */
-	/* print_display_test(2); */
-	print_config();
-	/* loop_malloc(TINY_SIZE); */
-	ptr = malloc(10);
-	free(ptr);
-	show_alloc_mem();
-	return (0);
 }
