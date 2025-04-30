@@ -49,6 +49,7 @@ static t_block	*create_block_in_zone(t_zone *zone, size_t size)
 	return (result);
 }
 
+// TODO: check size error like 0, overflow, negative;
 void	*malloc(size_t size)
 {
 	t_block	*block;
@@ -60,7 +61,7 @@ void	*malloc(size_t size)
 	print_size(size);
 	block = NULL;
 	zone_type = which_zone(size);
-	zone = find_zone(zone_type);
+	zone = find_zone(zone_type, size);
 	if (!zone)
 	{
 		create_zone(&zone, size, zone_type);
@@ -88,8 +89,5 @@ void	*malloc(size_t size)
 			zone->used_size += BLOCK_SIZE + size;
 		}
 	}
-	ft_putstr_fd("used_size: ", 1);
-	ft_putnbr_fd(zone->used_size, 1);
-	ft_putstr_fd("\n", 1);
 	return ((void *)(block + 1));
 }
