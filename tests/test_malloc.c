@@ -1,5 +1,6 @@
 #include "../includes/libft_malloc.h"
 
+///////////////////////////////////////////
 static void	print_display_tester(void)
 {
 	ft_printf("==========================");
@@ -22,6 +23,7 @@ static void	print_config(void)
 	ft_putnbr_fd(ZONE_SIZE, 1);
 	ft_putendl_fd("", 1);
 }
+///////////////////////////////////////////
 
 void	first_test(void)
 {
@@ -40,7 +42,7 @@ void	first_test(void)
 	ft_printf("ptr3: %p\n", ptr3);
 }
 
-void	second_test(void)
+void	loop_malloc(size_t size)
 {
 	int		i;
 	int		max_alloc;
@@ -50,7 +52,7 @@ void	second_test(void)
 	max_alloc = 500;
 	while (i < max_alloc)
 	{
-		a = malloc(TINY_SIZE);
+		a = malloc(size);
 		i++;
 	}
 	(void)a;
@@ -59,14 +61,21 @@ void	second_test(void)
 	ft_putendl_fd("", 1);
 }
 
+// TODO: loop_random size malloc
+
+// TODO: unitest
 int	main(void)
 {
+	void	*ptr;
+
 	print_display_tester();
-	/* print_display_test(1); */
+	print_display_test(1);
 	/* first_test(); */
-	print_display_test(2);
+	/* print_display_test(2); */
 	print_config();
-	second_test();
+	/* loop_malloc(TINY_SIZE); */
+	ptr = malloc(10);
+	free(ptr);
 	show_alloc_mem();
 	return (0);
 }
