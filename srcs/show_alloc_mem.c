@@ -2,6 +2,7 @@
 #include "../includes/libft_malloc.h"
 
 // FIX: int sur le ft_putnbr;
+// probleme valgrind si deja free
 void	show_alloc_mem(void)
 {
 	t_zone	*zone;

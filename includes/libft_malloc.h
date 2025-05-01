@@ -25,6 +25,8 @@
 # define SMALL 2
 # define LARGE 3
 
+# define MAX_ALLOC (1024 * 1024 * 1024)
+
 # define ALIGNMENT 16
 # define IS_ALIGNED(p) (((uintptr_t)(p) % ALIGNMENT) == 0)
 

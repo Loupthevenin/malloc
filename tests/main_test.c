@@ -24,8 +24,7 @@ static void	print_config(void)
 	ft_putendl_fd("", 1);
 }
 ///////////////////////////////////////////
-
-static void	free_all_zones(void)
+void	free_all_zones(void)
 {
 	t_zone	*zone;
 	t_zone	*next;
@@ -48,10 +47,8 @@ int	main(void)
 	print_config();
 	/* test_malloc(); */
 	// functions
-	test_find_zone();
-	test_find_free_block();
-	test_add_block_to_zone();
-	/* show_alloc_mem(); */
-	free_all_zones();
+	/* test_find_zone(); */
+	/* test_find_free_block(); */
+	/* test_add_block_to_zone(); */
 	return (0);
 }

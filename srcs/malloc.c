@@ -49,7 +49,6 @@ static t_block	*create_block_in_zone(t_zone *zone, size_t size)
 	return (result);
 }
 
-// TODO: check size error like 0, overflow, negative;
 void	*malloc(size_t size)
 {
 	t_block	*block;
@@ -59,6 +58,8 @@ void	*malloc(size_t size)
 
 	print_custom("MALLOC");
 	print_size(size);
+	if (!check_size(size))
+		return (NULL);
 	block = NULL;
 	zone_type = which_zone(size);
 	zone = find_zone(zone_type, size);

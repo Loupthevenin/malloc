@@ -1,5 +1,12 @@
 #include "../includes/malloc.h"
 
+int	check_size(size_t size)
+{
+	if (size == 0 || size > MAX_ALLOC)
+		return (0);
+	return (1);
+}
+
 void	init_block(t_zone **current_zone, size_t size, t_block **block)
 {
 	(*block)->size = size;

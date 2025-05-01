@@ -10,6 +10,7 @@ void	print_size(size_t size);
 void	print_memory(size_t size);
 
 // UTILS
+int		check_size(size_t size);
 void	init_block(t_zone **current_zone, size_t size, t_block **block);
 int		which_zone(size_t size);
 t_zone	*find_zone(int zone_type, size_t size);
