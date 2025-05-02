@@ -9,6 +9,9 @@ void	print_custom(char *message);
 void	print_size(size_t size);
 void	print_memory(size_t size);
 
+// MAIN_FUNCTION
+t_block	*alloc_block_in_existing_zone(t_zone *zone, size_t size, int zone_type);
+
 // UTILS
 int		check_size(size_t size);
 void	init_block(t_zone **current_zone, size_t size, t_block **block);

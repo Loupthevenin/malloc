@@ -45,6 +45,6 @@ int	main(void)
 	print_display_tester();
 	print_display_test(1);
 	print_config();
-	test_malloc();
+	loop_malloc(SMALL_SIZE);
 	return (0);
 }

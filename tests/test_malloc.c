@@ -57,17 +57,18 @@ void	loop_malloc(size_t size)
 {
 	int		i;
 	int		max_alloc;
-	char	*a;
+	void	*ptrs[500];
 
 	i = 0;
 	max_alloc = 500;
 	while (i < max_alloc)
 	{
-		a = malloc(size);
+		ptrs[i] = malloc(size);
+		assert_ptr_not_null(ptrs[i], "loop_malloc()");
 		i++;
 	}
-	(void)a;
-	ft_putstr_fd("total malloc: ", 1);
-	ft_putnbr_fd(i, 1);
-	ft_putendl_fd("", 1);
+	show_alloc_mem();
+	i = 0;
+	while (i < max_alloc)
+		free(ptrs[i++]);
 }

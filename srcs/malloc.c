@@ -60,8 +60,7 @@ static t_block	*create_block_in_zone(t_zone *zone, size_t size)
 	return (result);
 }
 
-static t_block	*alloc_block_in_existing_zone(t_zone *zone, size_t size,
-		int zone_type)
+t_block	*alloc_block_in_existing_zone(t_zone *zone, size_t size, int zone_type)
 {
 	t_block	*block;
 
@@ -78,6 +77,8 @@ static t_block	*alloc_block_in_existing_zone(t_zone *zone, size_t size,
 	return (block);
 }
 
+// TODO: mettre en place des prints pour chaque passages différents
+// TODO: mettre en place un on off pour activer les prints de debug
 void	*malloc(size_t size)
 {
 	t_block	*block;
