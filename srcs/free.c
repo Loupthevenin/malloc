@@ -1,6 +1,7 @@
 #include "../includes/free.h"
 
 // TODO: Fusionner les blocks free adjacents
+// TODO: Supprimer les zones empty is_free 1;
 void	free(void *ptr)
 {
 	t_block			*block;

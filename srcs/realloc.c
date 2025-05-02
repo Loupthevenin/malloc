@@ -1,31 +1,25 @@
 #include "../includes/realloc.h"
 
-// TODO: reformat + add [REALLOC] in trace and debug
-void	*realloc(void *ptr, size_t size)
+static void	*handle_null_ptr(size_t size, t_debug_config *config)
 {
-	void			*result;
-	t_block			*old_block;
-	t_debug_config	*config;
+	if (config->trace)
+		print_trace("[REALLOC] NULL ptr passed to realloc: fallback to malloc");
+	return (malloc(size));
+}
 
-	config = init_debug_env();
-	if (config->verbose)
-	{
-		print_custom("[REALLOC] REALLOC");
-		print_size("[REALLOC] ", size);
-	}
-	if (!ptr)
-	{
-		if (config->trace)
-			print_trace("[REALLOC] NULL ptr passed to realloc: fallback to malloc");
-		return (malloc(size));
-	}
-	if (size == 0)
-	{
-		if (config->trace)
-			print_trace("[REALLOC] Realloc with size 0: freeing pointer");
-		free(ptr);
-		return (NULL);
-	}
+static void	*handle_zero_size(void *ptr, t_debug_config *config)
+{
+	if (config->trace)
+		print_trace("[REALLOC] Realloc with size 0: freeing pointer");
+	free(ptr);
+	return (NULL);
+}
+
+static void	*realloc_block(void *ptr, size_t size, t_debug_config *config)
+{
+	t_block	*old_block;
+	void	*result;
+
 	old_block = (t_block *)ptr - 1;
 	if (!old_block)
 	{
@@ -50,4 +44,21 @@ void	*realloc(void *ptr, size_t size)
 					" freeing old block");
 	free(ptr);
 	return (result);
+}
+
+void	*realloc(void *ptr, size_t size)
+{
+	t_debug_config	*config;
+
+	config = init_debug_env();
+	if (config->verbose)
+	{
+		print_custom("[REALLOC] REALLOC");
+		print_size("[REALLOC] ", size);
+	}
+	if (!ptr)
+		return (handle_null_ptr(size, config));
+	if (size == 0)
+		return (handle_zero_size(ptr, config));
+	return (realloc_block(ptr, size, config));
 }
