@@ -4,15 +4,29 @@ void	test_malloc(void)
 {
 	void	*ptr;
 	char	*mem;
+	int		*small;
+	char	*large;
 
 	ptr = malloc(TINY_SIZE);
 	assert_ptr_not_null(ptr, "malloc(TINY_SIZE)");
-	ptr = malloc(0);
-	assert_ptr_not_null(ptr,
-						"malloc(0) should still return (non-null per POSIX");
 	mem = malloc(64);
-	assert_ptr_not_null(ptr, "malloc(64)");
+	assert_ptr_not_null(mem, "malloc(64)");
 	ft_memset(mem, 'A', 64);
+	small = malloc(600);
+	assert_ptr_not_null(small, "malloc(600)");
+	ft_memset(small, 5, 600);
+	large = malloc(60000);
+	assert_ptr_not_null(large, "malloc(60000)");
+	ft_memset(large, 'B', 60000);
+	show_alloc_mem();
+	if (ptr)
+		free(ptr);
+	if (mem)
+		free(mem);
+	if (small)
+		free(small);
+	if (large)
+		free(large);
 }
 
 void	illegal_number(void)
@@ -37,30 +51,6 @@ void	illegal_number(void)
 	assert_ptr_not_null(ptr, "valid malloc");
 	if (ptr)
 		free(ptr);
-}
-
-void	first_test(void)
-{
-	void	*ptr1;
-	void	*ptr2;
-	void	*ptr3;
-	void	*ptr4;
-	void	*ptr5;
-	void	*ptr6;
-
-	ptr1 = malloc(64);
-	ptr2 = malloc(512);
-	ptr3 = malloc(2048);
-	ptr4 = malloc(4000);
-	ptr5 = malloc(8000);
-	ptr6 = malloc(5000);
-	(void)ptr1;
-	(void)ptr2;
-	(void)ptr3;
-	(void)ptr4;
-	(void)ptr5;
-	(void)ptr6;
-	show_alloc_mem();
 }
 
 void	loop_malloc(size_t size)

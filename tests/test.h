@@ -11,7 +11,6 @@ void	assert_ptr_equal(void *a, void *b, char *msg);
 
 // TESTING
 void	illegal_number(void);
-void	first_test(void);
 void	test_malloc(void);
 void	loop_malloc(size_t size);
 

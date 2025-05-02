@@ -45,10 +45,6 @@ int	main(void)
 	print_display_tester();
 	print_display_test(1);
 	print_config();
-	/* test_malloc(); */
-	// functions
-	/* test_find_zone(); */
-	/* test_find_free_block(); */
-	/* test_add_block_to_zone(); */
+	test_malloc();
 	return (0);
 }
