@@ -9,30 +9,41 @@ static void	*get_memory(size_t size)
 			0));
 }
 
-// TODO: manage error failed
-static void	create_zone(t_zone **tmp, size_t size, int zone_type)
+static t_zone	*create_zone(size_t size, int zone_type)
 {
-	size_t	total_size;
+	t_zone	*zone;
 	t_block	*block;
+	size_t	total_size;
 
 	total_size = get_size(size, zone_type, 0);
-	*tmp = get_memory(total_size);
-	if (*tmp == MAP_FAILED)
+	zone = get_memory(total_size);
+	if (zone == MAP_FAILED)
 	{
 		perror("mmap zone");
-		return ;
+		return (NULL);
 	}
-	(*tmp)->zone_type = zone_type;
-	(*tmp)->zone_size = total_size;
-	(*tmp)->blocks = NULL;
-	(*tmp)->next = g_zone;
-	g_zone = *tmp;
+	zone->zone_type = zone_type;
+	zone->zone_size = total_size;
+	zone->blocks = NULL;
+	zone->next = g_zone;
+	g_zone = zone;
 	// on donne de la memoire a block de telle sorte a ce qu'on soit juste apres zone;
-	block = (t_block *)((char *)*tmp + ZONE_SIZE);
+	block = (t_block *)((char *)zone + ZONE_SIZE);
 	block = (t_block *)align_ptr(block);
-	init_block(tmp, size, &block);
-	(*tmp)->blocks = block;
-	(*tmp)->used_size = ZONE_SIZE + BLOCK_SIZE + size;
+	init_block(&zone, size, &block);
+	zone->blocks = block;
+	zone->used_size = ZONE_SIZE + BLOCK_SIZE + size;
+	return (zone);
+}
+
+static t_block	*alloc_block_new_zone(size_t size, int zone_type)
+{
+	t_zone	*zone;
+
+	zone = create_zone(size, zone_type);
+	if (!zone)
+		return (NULL);
+	return (zone->blocks);
 }
 
 static t_block	*create_block_in_zone(t_zone *zone, size_t size)
@@ -47,16 +58,6 @@ static t_block	*create_block_in_zone(t_zone *zone, size_t size)
 	add_block_to_zone(zone, result);
 	zone->used_size += BLOCK_SIZE + size;
 	return (result);
-}
-
-static t_block	*alloc_block_new_zone(size_t size, int zone_type)
-{
-	t_zone	*new_zone;
-
-	create_zone(&new_zone, size, zone_type);
-	if (!new_zone)
-		return (NULL);
-	return (new_zone->blocks);
 }
 
 static t_block	*alloc_block_in_existing_zone(t_zone *zone, size_t size,
