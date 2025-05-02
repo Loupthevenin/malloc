@@ -4,7 +4,6 @@ t_zone			*g_zone = NULL;
 
 static void	*get_memory(size_t size)
 {
-	print_memory(size);
 	return (mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1,
 			0));
 }
@@ -36,31 +35,48 @@ static t_zone	*create_zone(size_t size, int zone_type)
 	return (zone);
 }
 
-static t_block	*alloc_block_new_zone(size_t size, int zone_type)
+static t_block	*alloc_block_new_zone(size_t size, int zone_type,
+		t_debug_config *config)
 {
 	t_zone	*zone;
 
+	if (config->trace)
+		print_trace("Creating new zone");
 	zone = create_zone(size, zone_type);
 	if (!zone)
+	{
+		if (config->trace)
+			print_trace("Failed to create new zone");
 		return (NULL);
+	}
+	if (config->trace)
+		print_trace("Zone created and first block initialized");
 	return (zone->blocks);
 }
 
-static t_block	*create_block_in_zone(t_zone *zone, size_t size)
+static t_block	*create_block_in_zone(t_zone *zone, size_t size,
+		t_debug_config *config)
 {
 	t_block	*result;
 
 	if (zone->used_size + BLOCK_SIZE + size > zone->zone_size)
+	{
+		if (config->trace)
+			print_trace("Not enough space in zone to create new block");
 		return (NULL);
+	}
 	result = (t_block *)((char *)zone + zone->used_size);
 	result = (t_block *)align_ptr(result);
 	init_block(&zone, size, &result);
 	add_block_to_zone(zone, result);
 	zone->used_size += BLOCK_SIZE + size;
+	if (config->trace)
+		print_trace("New block created in existing zone");
 	return (result);
 }
 
-t_block	*alloc_block_in_existing_zone(t_zone *zone, size_t size, int zone_type)
+t_block	*alloc_block_in_existing_zone(t_zone *zone, size_t size, int zone_type,
+		t_debug_config *config)
 {
 	t_block	*block;
 
@@ -69,16 +85,23 @@ t_block	*alloc_block_in_existing_zone(t_zone *zone, size_t size, int zone_type)
 	{
 		block->is_free = 0;
 		zone->used_size += BLOCK_SIZE + size;
+		if (config->trace)
+			print_trace("Reusing free block from existing zone");
 		return (block);
 	}
-	block = create_block_in_zone(zone, size);
+	if (config->trace)
+		print_trace("No suitable free block, trying to create new one");
+	block = create_block_in_zone(zone, size, config);
 	if (!block)
-		return (alloc_block_new_zone(size, zone_type));
+	{
+		if (config->trace)
+			print_trace("Failed to create block in existing zone,"
+						"fallback to new zone");
+		return (alloc_block_new_zone(size, zone_type, config));
+	}
 	return (block);
 }
 
-// TODO: mettre en place des prints pour chaque passages différents
-// TODO: mettre en place un on off pour activer les prints de debug
 void	*malloc(size_t size)
 {
 	t_block			*block;
@@ -98,9 +121,9 @@ void	*malloc(size_t size)
 	zone_type = which_zone(size);
 	zone = find_zone(zone_type, size);
 	if (!zone)
-		block = alloc_block_new_zone(size, zone_type);
+		block = alloc_block_new_zone(size, zone_type, config);
 	else
-		block = alloc_block_in_existing_zone(zone, size, zone_type);
+		block = alloc_block_in_existing_zone(zone, size, zone_type, config);
 	if (!block)
 		return (NULL);
 	return ((void *)(block + 1));

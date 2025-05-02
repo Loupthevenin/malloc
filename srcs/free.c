@@ -12,11 +12,15 @@ void	free(void *ptr)
 	if (!ptr)
 		return ;
 	block = (t_block *)ptr - 1;
-	// TODO: Verification que ptr est bien return par malloc (! on doit loop sur toutes la memoire)
+	// TODO: Verification que ptr est bien return par malloc (! on doit loop sur toutes la memoire) avec env variable ?
 	if (config->verbose)
 		print_size(block->size);
+	if (config->trace)
+		print_trace("Freeing block");
 	if (block->zone->zone_type == LARGE)
 	{
+		if (config->trace)
+			print_trace("Unmapping LARGE zone");
 		if (munmap((void *)block->zone, block->zone->zone_size) == -1)
 			perror("munmap");
 		return ;
@@ -24,4 +28,6 @@ void	free(void *ptr)
 	block->is_free = 1;
 	// Attention si on fusionne les blocks !
 	block->zone->used_size -= block->size + BLOCK_SIZE;
+	if (config->trace)
+		print_trace("Marked block as free and updated zone usage");
 }

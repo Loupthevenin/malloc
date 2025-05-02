@@ -115,16 +115,20 @@ void	test_add_block_to_zone(void)
 // Test block libre trouvé
 void	test_reuse_free_block(void)
 {
-	t_zone	*zone;
-	t_block	*block;
-	t_block	*result;
+	t_zone			*zone;
+	t_block			*block;
+	t_block			*result;
+	t_debug_config	config;
 
 	ft_putstr_fd("=== Test reuse free block ===\n", 1);
 	zone = create_test_zone(SMALL, SMALL_SIZE);
 	block = create_test_block(128, 1, zone);
 	zone->blocks = block;
 	g_zone = zone;
-	result = alloc_block_in_existing_zone(zone, 64, SMALL);
+	config.trace = 0;
+	config.fail = 0;
+	config.trace = 0;
+	result = alloc_block_in_existing_zone(zone, 64, SMALL, &config);
 	assert_ptr_not_null(result, "Expected block to be reused");
 	assert(result == block);
 	ft_putstr_fd("✅ PASS assert\n", 1);
