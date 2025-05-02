@@ -10,12 +10,14 @@ void	assert_ptr_not_null(void *ptr, char *msg);
 void	assert_ptr_null(void *ptr, char *msg);
 void	assert_ptr_equal(void *a, void *b, char *msg);
 void	assert_int_equals(int a, int b, char *msg);
+void	assert_true(int cond, char *msg);
 
 // *** TESTING *** //
 ///////// MALLOC /////////
 void	illegal_number(void);
 void	test_malloc(void);
 void	loop_malloc(size_t size);
+void	test_malloc_structures(void);
 
 // *** Function TEST *** //
 ///////// MALLOC /////////

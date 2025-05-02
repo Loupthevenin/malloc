@@ -8,13 +8,6 @@ static void	print_display_tester(void)
 	ft_printf("==========================\n");
 }
 
-static void	print_display_test(int i)
-{
-	ft_putstr_fd("***TEST*** ", 1);
-	ft_putnbr_fd(i, 1);
-	ft_putstr_fd("\n", 1);
-}
-
 static void	print_config(void)
 {
 	ft_putstr_fd("BLOCK_SIZE: ", 1);
@@ -43,8 +36,7 @@ void	free_all_zones(void)
 int	main(void)
 {
 	print_display_tester();
-	print_display_test(1);
 	print_config();
-	loop_malloc(SMALL_SIZE);
+	test_malloc_structures();
 	return (0);
 }
