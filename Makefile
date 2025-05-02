@@ -74,8 +74,7 @@ run: test
 	@echo "$(CYAN)▶️  Exécution du test :$(RESET)"
 	@LD_LIBRARY_PATH=. ./$(TEST_NAME)
 
-script: test
-	@echo "$(MAGENTA)🔍 Exécution avec Valgrind :$(RESET)"
+script:
 	@$(TEST_SCRIPT) $(TEST_NAME)
 
 run_all: run script
@@ -94,4 +93,4 @@ fclean:
 
 re: fclean all
 
-.PHONY: all clean fclean re link test
+.PHONY: all clean fclean re link test script run_all
