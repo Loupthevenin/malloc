@@ -106,14 +106,16 @@ void	*align_ptr(void *ptr)
 
 void	print_custom(char *message)
 {
-	ft_putstr_fd(GREEN "[DEBUG] CUSTOM ", 1);
+	ft_putstr_fd(GREEN "[DEBUG] ", 1);
 	ft_putendl_fd(message, 1);
 	ft_putstr_fd(RESET, 1);
 }
 
-void	print_size(size_t size)
+void	print_size(char *message, size_t size)
 {
-	ft_putstr_fd(YELLOW "[DEBUG] Alloc size: ", 1);
+	ft_putstr_fd(YELLOW "[DEBUG] ", 1);
+	ft_putstr_fd(message, 1);
+	ft_putstr_fd("Alloc size: ", 1);
 	ft_putnbr_fd(size, 1);
 	ft_putstr_fd("\n" RESET, 1);
 }

@@ -41,16 +41,16 @@ static t_block	*alloc_block_new_zone(size_t size, int zone_type,
 	t_zone	*zone;
 
 	if (config->trace)
-		print_trace("Creating new zone");
+		print_trace("[MALLOC] Creating new zone");
 	zone = create_zone(size, zone_type);
 	if (!zone)
 	{
 		if (config->trace)
-			print_trace("Failed to create new zone");
+			print_trace("[MALLOC] Failed to create new zone");
 		return (NULL);
 	}
 	if (config->trace)
-		print_trace("Zone created and first block initialized");
+		print_trace("[MALLOC] Zone created and first block initialized");
 	return (zone->blocks);
 }
 
@@ -62,7 +62,7 @@ static t_block	*create_block_in_zone(t_zone *zone, size_t size,
 	if (zone->used_size + BLOCK_SIZE + size > zone->zone_size)
 	{
 		if (config->trace)
-			print_trace("Not enough space in zone to create new block");
+			print_trace("[MALLOC] Not enough space in zone to create new block");
 		return (NULL);
 	}
 	result = (t_block *)((char *)zone + zone->used_size);
@@ -71,7 +71,7 @@ static t_block	*create_block_in_zone(t_zone *zone, size_t size,
 	add_block_to_zone(zone, result);
 	zone->used_size += BLOCK_SIZE + size;
 	if (config->trace)
-		print_trace("New block created in existing zone");
+		print_trace("[MALLOC] New block created in existing zone");
 	return (result);
 }
 
@@ -86,16 +86,17 @@ t_block	*alloc_block_in_existing_zone(t_zone *zone, size_t size, int zone_type,
 		block->is_free = 0;
 		zone->used_size += BLOCK_SIZE + size;
 		if (config->trace)
-			print_trace("Reusing free block from existing zone");
+			print_trace("[MALLOC] Reusing free block from existing zone");
 		return (block);
 	}
 	if (config->trace)
-		print_trace("No suitable free block, trying to create new one");
+		print_trace("[MALLOC] No suitable free block,"
+					" trying to create new one");
 	block = create_block_in_zone(zone, size, config);
 	if (!block)
 	{
 		if (config->trace)
-			print_trace("Failed to create block in existing zone,"
+			print_trace("[MALLOC] Failed to create block in existing zone,"
 						"fallback to new zone");
 		return (alloc_block_new_zone(size, zone_type, config));
 	}
@@ -112,8 +113,8 @@ void	*malloc(size_t size)
 	config = init_debug_env();
 	if (config->verbose)
 	{
-		print_custom("MALLOC");
-		print_size(size);
+		print_custom("[MALLOC] MALLOC");
+		print_size("[MALLOC] ", size);
 	}
 	if (!check_size(size))
 		return (NULL);

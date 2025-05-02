@@ -8,19 +8,19 @@ void	free(void *ptr)
 
 	config = init_debug_env();
 	if (config->verbose)
-		print_custom("FREE");
+		print_custom("[FREE] FREE");
 	if (!ptr)
 		return ;
 	block = (t_block *)ptr - 1;
 	// TODO: Verification que ptr est bien return par malloc (! on doit loop sur toutes la memoire) avec env variable ?
 	if (config->verbose)
-		print_size(block->size);
+		print_size("[FREE] ", block->size);
 	if (config->trace)
-		print_trace("Freeing block");
+		print_trace("[FREE] Freeing block");
 	if (block->zone->zone_type == LARGE)
 	{
 		if (config->trace)
-			print_trace("Unmapping LARGE zone");
+			print_trace("[FREE] Unmapping LARGE zone");
 		if (munmap((void *)block->zone, block->zone->zone_size) == -1)
 			perror("munmap");
 		return ;
@@ -29,5 +29,5 @@ void	free(void *ptr)
 	// Attention si on fusionne les blocks !
 	block->zone->used_size -= block->size + BLOCK_SIZE;
 	if (config->trace)
-		print_trace("Marked block as free and updated zone usage");
+		print_trace("[FREE] Marked block as free and updated zone usage");
 }
