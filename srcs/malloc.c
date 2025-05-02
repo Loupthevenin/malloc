@@ -49,11 +49,38 @@ static t_block	*create_block_in_zone(t_zone *zone, size_t size)
 	return (result);
 }
 
+static t_block	*alloc_block_new_zone(size_t size, int zone_type)
+{
+	t_zone	*new_zone;
+
+	create_zone(&new_zone, size, zone_type);
+	if (!new_zone)
+		return (NULL);
+	return (new_zone->blocks);
+}
+
+static t_block	*alloc_block_in_existing_zone(t_zone *zone, size_t size,
+		int zone_type)
+{
+	t_block	*block;
+
+	block = find_free_block(zone, size);
+	if (block)
+	{
+		block->is_free = 0;
+		zone->used_size += BLOCK_SIZE + size;
+		return (block);
+	}
+	block = create_block_in_zone(zone, size);
+	if (!block)
+		return (alloc_block_new_zone(size, zone_type));
+	return (block);
+}
+
 void	*malloc(size_t size)
 {
 	t_block	*block;
 	t_zone	*zone;
-	t_zone	*new_zone;
 	int		zone_type;
 
 	print_custom("MALLOC");
@@ -64,31 +91,10 @@ void	*malloc(size_t size)
 	zone_type = which_zone(size);
 	zone = find_zone(zone_type, size);
 	if (!zone)
-	{
-		create_zone(&zone, size, zone_type);
-		if (!zone)
-			return (NULL);
-		block = zone->blocks;
-	}
+		block = alloc_block_new_zone(size, zone_type);
 	else
-	{
-		block = find_free_block(zone, size);
-		if (!block)
-		{
-			block = create_block_in_zone(zone, size);
-			if (!block)
-			{
-				create_zone(&new_zone, size, zone_type);
-				if (!new_zone)
-					return (NULL);
-				block = new_zone->blocks;
-			}
-		}
-		else
-		{
-			block->is_free = 0;
-			zone->used_size += BLOCK_SIZE + size;
-		}
-	}
+		block = alloc_block_in_existing_zone(zone, size, zone_type);
+	if (!block)
+		return (NULL);
 	return ((void *)(block + 1));
 }
