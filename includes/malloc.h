@@ -2,6 +2,7 @@
 # define MALLOC_H
 
 # include "colors.h"
+# include "debug.h"
 # include "libft_malloc.h"
 
 // DEBUG

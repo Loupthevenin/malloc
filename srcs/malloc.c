@@ -81,12 +81,17 @@ t_block	*alloc_block_in_existing_zone(t_zone *zone, size_t size, int zone_type)
 // TODO: mettre en place un on off pour activer les prints de debug
 void	*malloc(size_t size)
 {
-	t_block	*block;
-	t_zone	*zone;
-	int		zone_type;
+	t_block			*block;
+	t_zone			*zone;
+	int				zone_type;
+	t_debug_config	*config;
 
-	print_custom("MALLOC");
-	print_size(size);
+	config = init_debug_env();
+	if (config->verbose)
+	{
+		print_custom("MALLOC");
+		print_size(size);
+	}
 	if (!check_size(size))
 		return (NULL);
 	block = NULL;

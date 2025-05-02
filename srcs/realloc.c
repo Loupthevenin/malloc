@@ -1,10 +1,17 @@
-#include "../includes/libft_malloc.h"
+#include "../includes/realloc.h"
 
 void	*realloc(void *ptr, size_t size)
 {
-	void	*result;
-	t_block	*old_block;
+	void			*result;
+	t_block			*old_block;
+	t_debug_config	*config;
 
+	config = init_debug_env();
+	if (config->verbose)
+	{
+		print_custom("REALLOC");
+		print_size(size);
+	}
 	if (!ptr)
 		return (malloc(size));
 	if (size == 0)

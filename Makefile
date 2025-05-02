@@ -7,7 +7,8 @@ SRC_FILES = malloc.c\
 			free.c\
 			realloc.c\
 			show_alloc_mem.c\
-			utils.c
+			utils.c\
+			debug.c
 INCLUDES = -I includes -I libft
 
 LIBFT_DIR = libft

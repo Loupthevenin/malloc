@@ -1,5 +1,5 @@
-#ifndef FREE_H
-# define FREE_H
+#ifndef REALLOC_H
+# define REALLOC_H
 
 # include "colors.h"
 # include "debug.h"
