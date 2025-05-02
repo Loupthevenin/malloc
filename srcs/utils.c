@@ -81,34 +81,14 @@ size_t	get_zone_size(size_t max_alloc_size)
 	return (((total_zone + page_size - 1) / page_size) * page_size);
 }
 
-// HACK: delete ?
-size_t	get_block_size(size_t max_alloc_size)
-{
-	size_t	page_size;
-	size_t	total_max_alloc;
-	size_t	total_block;
-
-	page_size = get_page_size();
-	total_max_alloc = max_alloc_size + BLOCK_SIZE;
-	total_block = total_max_alloc * MIN_BLOCKS_PER_ZONE;
-	return (((total_block + page_size - 1) / page_size) * page_size);
-}
-
-// HACK: change ?
-size_t	get_size(size_t size, int zone_type, int is_block)
+size_t	get_size(size_t size, int zone_type)
 {
 	size_t	result;
 
 	if (zone_type == TINY)
-		if (!is_block)
-			result = get_zone_size(TINY_SIZE);
-		else
-			result = get_block_size(TINY_SIZE);
+		result = get_zone_size(TINY_SIZE);
 	else if (zone_type == SMALL)
-		if (!is_block)
-			result = get_zone_size(SMALL_SIZE);
-		else
-			result = get_block_size(SMALL_SIZE);
+		result = get_zone_size(SMALL_SIZE);
 	else if (zone_type == LARGE)
 		result = size + BLOCK_SIZE + ZONE_SIZE;
 	return (result);

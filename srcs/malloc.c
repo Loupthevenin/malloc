@@ -15,7 +15,7 @@ static t_zone	*create_zone(size_t size, int zone_type)
 	t_block	*block;
 	size_t	total_size;
 
-	total_size = get_size(size, zone_type, 0);
+	total_size = get_size(size, zone_type);
 	zone = get_memory(total_size);
 	if (zone == MAP_FAILED)
 	{

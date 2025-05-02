@@ -21,7 +21,7 @@ t_block	*find_free_block(t_zone *zone, size_t size);
 void	add_block_to_zone(t_zone *zone, t_block *new_block);
 size_t	get_block_size(size_t max_alloc_size);
 size_t	get_zone_size(size_t max_alloc_size);
-size_t	get_size(size_t size, int zone_type, int is_block);
+size_t	get_size(size_t size, int zone_type);
 void	*align_ptr(void *ptr);
 
 #endif
