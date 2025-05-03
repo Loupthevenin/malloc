@@ -133,8 +133,7 @@ static void	print_zone_blocks(t_zone *zone)
 	block = zone->blocks;
 	while (block)
 	{
-		if (!block->is_free)
-			print_block_info(block);
+		print_block_info(block);
 		block = block->next;
 	}
 }

@@ -20,7 +20,6 @@ void	test_malloc(void)
 	assert_ptr_not_null(large, "malloc(60000)");
 	ft_memset(large, 'B', 60000);
 	show_alloc_mem();
-	show_alloc_mem_ex();
 	if (ptr)
 		free(ptr);
 	if (mem)
@@ -29,6 +28,38 @@ void	test_malloc(void)
 		free(small);
 	if (large)
 		free(large);
+}
+
+void	test_ex(void)
+{
+	void	*gray_zone;
+	void	*red_zone;
+	void	*green_zone;
+	void	*cyan_zone;
+	void	*orange_zone;
+	void	*e;
+
+	ft_putstr_fd("\n\033[1;35m=== TEST MALLOC COLOR ZONES ===\033[0m\n", 1);
+	gray_zone = malloc(64);
+	red_zone = malloc(64);
+	green_zone = malloc(64);
+	cyan_zone = malloc(64);
+	orange_zone = malloc(64);
+	e = malloc(2096);
+	ft_memset(gray_zone, 0x00, 64);
+	ft_memset(red_zone, 0x20, 64);
+	ft_memset(green_zone, 0x41, 64);
+	ft_memset(cyan_zone, 0x80, 64);
+	ft_memset(orange_zone, 0xC0, 64);
+	for (int i = 0; i < 2096; i++)
+		((unsigned char *)e)[i] = (i * 37 + 13) % 256;
+	free(gray_zone);
+	free(red_zone);
+	free(green_zone);
+	free(cyan_zone);
+	show_alloc_mem_ex();
+	free(orange_zone);
+	free(e);
 }
 
 void	illegal_number(void)
@@ -73,6 +104,7 @@ void	loop_malloc(size_t size)
 	}
 	i = 0;
 	show_alloc_mem();
+	show_alloc_mem_ex();
 	while (i < max_alloc)
 		free(ptrs[i++]);
 }

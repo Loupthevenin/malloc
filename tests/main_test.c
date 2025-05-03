@@ -37,6 +37,6 @@ int	main(void)
 {
 	print_display_tester();
 	print_config();
-	test_malloc();
+	test_ex();
 	return (0);
 }

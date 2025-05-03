@@ -18,6 +18,7 @@ void	illegal_number(void);
 void	test_malloc(void);
 void	loop_malloc(size_t size);
 void	test_malloc_structures(void);
+void	test_ex(void);
 
 ///////// REALLOC /////////
 void	test_realloc_increase_size(void);
