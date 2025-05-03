@@ -6,7 +6,7 @@
 /*   By: ltheveni <ltheveni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 16:12:37 by ltheveni          #+#    #+#             */
-/*   Updated: 2025/05/03 14:30:30 by ltheveni         ###   ########.fr       */
+/*   Updated: 2025/05/03 15:56:49 by ltheveni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ void				ft_putstr_fd(char *s, int fd);
 void				ft_putendl_fd(char *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
 void				ft_putsize_fd(size_t n, int fd);
-void				ft_putsize_base_fd(size_t n, char *base, int fd);
+void				ft_putsize_base_fd(size_t n, char *base, int fd,
+						int padding);
 char				*get_next_line(int fd);
 int					ft_printf(const char *s, ...);
 
