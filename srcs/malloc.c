@@ -56,17 +56,14 @@ static t_block	*alloc_block_new_zone(size_t size, int zone_type,
 {
 	t_zone	*zone;
 
-	if (config->trace)
-		print_trace("[MALLOC] Creating new zone");
+	log_trace_if(config, "[MALLOC] Creating new zone");
 	zone = create_zone(size, zone_type);
 	if (!zone)
 	{
-		if (config->trace)
-			print_trace("[MALLOC] Failed to create new zone");
+		log_trace_if(config, "[MALLOC] Failed to create new zone");
 		return (NULL);
 	}
-	if (config->trace)
-		print_trace("[MALLOC] Zone created and first block initialized");
+	log_trace_if(config, "[MALLOC] Zone created and first block initialized");
 	return (zone->blocks);
 }
 
@@ -77,8 +74,8 @@ static t_block	*create_block_in_zone(t_zone *zone, size_t size,
 
 	if (zone->used_size + BLOCK_SIZE + size > zone->zone_size)
 	{
-		if (config->trace)
-			print_trace("[MALLOC] Not enough space in zone to create new block");
+		log_trace_if(config,
+						"[MALLOC] Not enough space in zone to create new block");
 		return (NULL);
 	}
 	result = (t_block *)((char *)zone + zone->used_size);
@@ -86,8 +83,7 @@ static t_block	*create_block_in_zone(t_zone *zone, size_t size,
 	init_block(&zone, size, &result);
 	add_block_to_zone(zone, result);
 	zone->used_size += BLOCK_SIZE + size;
-	if (config->trace)
-		print_trace("[MALLOC] New block created in existing zone");
+	log_trace_if(config, "[MALLOC] New block created in existing zone");
 	return (result);
 }
 
@@ -101,19 +97,16 @@ t_block	*alloc_block_in_existing_zone(t_zone *zone, size_t size, int zone_type,
 	{
 		block->is_free = 0;
 		zone->used_size += BLOCK_SIZE + size;
-		if (config->trace)
-			print_trace("[MALLOC] Reusing free block from existing zone");
+		log_trace_if(config, "[MALLOC] Reusing free block from existing zone");
 		return (block);
 	}
-	if (config->trace)
-		print_trace("[MALLOC] No suitable free block,"
-					" trying to create new one");
+	log_trace_if(config, "[MALLOC] No suitable free block,"
+							" trying to create new one");
 	block = create_block_in_zone(zone, size, config);
 	if (!block)
 	{
-		if (config->trace)
-			print_trace("[MALLOC] Failed to create block in existing zone,"
-						"fallback to new zone");
+		log_trace_if(config, "[MALLOC] Failed to create block in existing zone,"
+								"fallback to new zone");
 		return (alloc_block_new_zone(size, zone_type, config));
 	}
 	return (block);
