@@ -28,7 +28,7 @@ static size_t	print_block_info(t_block *block)
 	ft_putstr_fd(" - ", 1);
 	ft_putptr(end);
 	ft_putstr_fd(" : ", 1);
-	ft_putnbr_fd(block->size, 1);
+	ft_putsize_fd(block->size, 1);
 	ft_putstr_fd(" bytes\n", 1);
 	ft_putstr_fd(RESET, 1);
 	return (block->size);
@@ -50,7 +50,6 @@ static size_t	print_zone_blocks(t_zone *zone)
 	return (total);
 }
 
-// FIX: int sur le ft_putnbr;
 void	show_alloc_mem(void)
 {
 	t_zone	*zone;
@@ -70,6 +69,6 @@ void	show_alloc_mem(void)
 		zone = zone->next;
 	}
 	ft_putstr_fd("Total : ", 1);
-	ft_putnbr_fd(total, 1);
+	ft_putsize_fd(total, 1);
 	ft_putstr_fd(" bytes\n", 1);
 }

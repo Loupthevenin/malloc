@@ -20,6 +20,7 @@ void	test_malloc(void)
 	assert_ptr_not_null(large, "malloc(60000)");
 	ft_memset(large, 'B', 60000);
 	show_alloc_mem();
+	show_alloc_mem_ex();
 	if (ptr)
 		free(ptr);
 	if (mem)

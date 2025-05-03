@@ -37,12 +37,6 @@ int	main(void)
 {
 	print_display_tester();
 	print_config();
-	test_free_simple();
-	test_double_free();
-	test_no_malloc();
-	test_free_null();
-	test_free_all_zones();
-	test_zone_removed_when_empty();
-	test_free_and_reuse();
+	test_malloc();
 	return (0);
 }

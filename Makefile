@@ -7,6 +7,7 @@ SRC_FILES = malloc.c\
 			free.c\
 			realloc.c\
 			show_alloc_mem.c\
+			show_alloc_mem_ex.c\
 			utils.c\
 			debug.c
 INCLUDES = -I includes -I libft
@@ -68,6 +69,7 @@ $(OBJ_DIR)%.o: $(TEST_DIR)%.c $(TEST_HEADERS)
 
 test: $(TEST_OBJ) $(LIBFT) $(NAME) link
 	@$(CC) -o $(TEST_NAME) $(TEST_OBJ) -L . -lft_malloc
+	clear
 	@echo "$(YELLOW)🚀 Test compilé$(RESET)"
 
 run: test
