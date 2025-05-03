@@ -116,14 +116,14 @@ void	print_size(char *message, size_t size)
 	ft_putstr_fd(YELLOW "[DEBUG] ", 1);
 	ft_putstr_fd(message, 1);
 	ft_putstr_fd("Alloc size: ", 1);
-	ft_putnbr_fd(size, 1);
+	ft_putsize_fd(size, 1);
 	ft_putstr_fd("\n" RESET, 1);
 }
 
 void	print_memory(size_t size)
 {
 	ft_putstr_fd(BLUE "[MMAP] Calling mmap with size: ", 1);
-	ft_putnbr_fd(size, 1);
+	ft_putsize_fd(size, 1);
 	ft_putstr_fd("\n" RESET, 1);
 }
 
