@@ -38,21 +38,53 @@ static void	remove_zone(t_zone *zone_to_remove)
 	}
 }
 
+static t_block	*is_valid_malloc_ptr(void *ptr)
+{
+	t_zone	*zone;
+	t_block	*block;
+
+	zone = g_zone;
+	while (zone)
+	{
+		block = zone->blocks;
+		while (block)
+		{
+			if ((void *)(block + 1) == ptr)
+				return (block);
+			block = block->next;
+		}
+		zone = zone->next;
+	}
+	return (NULL);
+}
+
 // TODO: Fusionner les blocks free adjacents
 void	free(void *ptr)
 {
 	t_block			*block;
 	t_debug_config	*config;
 
-	if (!ptr)
-		return ;
 	config = init_debug_env();
-	block = (t_block *)ptr - 1;
-	// TODO: Verification que ptr est bien return par malloc (! on doit loop sur toutes la memoire) avec env variable ?
 	if (config->verbose)
-	{
 		print_custom("[FREE] FREE");
-		print_size("[FREE] ", block->size);
+	if (!ptr)
+	{
+		if (config->trace)
+			print_trace("[FREE] NULL pointer");
+		return ;
+	}
+	block = is_valid_malloc_ptr(ptr);
+	if (!block)
+	{
+		if (config->trace)
+			print_trace("[FREE] Invalid or unknown pointer passed to free");
+		return ;
+	}
+	if (block->is_free)
+	{
+		if (config->trace)
+			print_trace("[FREE] Double free detected");
+		return ;
 	}
 	if (config->trace)
 		print_trace("[FREE] Freeing block");
