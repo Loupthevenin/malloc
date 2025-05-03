@@ -104,6 +104,44 @@ void	*align_ptr(void *ptr)
 	return ((void *)result);
 }
 
+int	is_zone_empty(t_zone *zone)
+{
+	t_block	*block;
+
+	block = zone->blocks;
+	while (block)
+	{
+		if (!block->is_free)
+			return (0);
+		block = block->next;
+	}
+	return (1);
+}
+
+void	remove_zone(t_zone *zone_to_remove)
+{
+	t_zone	*current;
+	t_zone	*prev;
+
+	current = g_zone;
+	prev = NULL;
+	while (current)
+	{
+		if (current == zone_to_remove)
+		{
+			if (prev)
+				prev->next = current->next;
+			else
+				g_zone = current->next;
+			if (munmap((void *)current, current->zone_size) == -1)
+				perror("munmap");
+			return ;
+		}
+		prev = current;
+		current = current->next;
+	}
+}
+
 void	print_custom(char *message)
 {
 	ft_putstr_fd(GREEN "[DEBUG] ", 1);
@@ -132,4 +170,10 @@ void	print_trace(char *message)
 	ft_putstr_fd(PURPLE "[TRACE] ", 1);
 	ft_putendl_fd(message, 1);
 	ft_putstr_fd(RESET, 1);
+}
+
+void	log_trace_if(t_debug_config *config, char *message)
+{
+	if (config->trace)
+		print_trace(message);
 }
