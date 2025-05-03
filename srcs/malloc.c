@@ -8,6 +8,23 @@ static void	*get_memory(size_t size)
 			0));
 }
 
+static void	insert_zone_sorted(t_zone *new_zone)
+{
+	t_zone	*current;
+
+	if (!g_zone || new_zone < g_zone)
+	{
+		new_zone->next = g_zone;
+		g_zone = new_zone;
+		return ;
+	}
+	current = g_zone;
+	while (current->next && current->next < new_zone)
+		current = current->next;
+	new_zone->next = current->next;
+	current->next = new_zone;
+}
+
 static t_zone	*create_zone(size_t size, int zone_type)
 {
 	t_zone	*zone;
@@ -24,8 +41,7 @@ static t_zone	*create_zone(size_t size, int zone_type)
 	zone->zone_type = zone_type;
 	zone->zone_size = total_size;
 	zone->blocks = NULL;
-	zone->next = g_zone;
-	g_zone = zone;
+	insert_zone_sorted(zone);
 	// on donne de la memoire a block de telle sorte a ce qu'on soit juste apres zone;
 	block = (t_block *)((char *)zone + ZONE_SIZE);
 	block = (t_block *)align_ptr(block);

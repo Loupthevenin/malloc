@@ -70,8 +70,8 @@ void	loop_malloc(size_t size)
 		assert_ptr_not_null(ptrs[i], "loop_malloc()");
 		i++;
 	}
-	show_alloc_mem();
 	i = 0;
+	show_alloc_mem();
 	while (i < max_alloc)
 		free(ptrs[i++]);
 }

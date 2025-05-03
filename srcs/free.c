@@ -14,7 +14,7 @@ static int	is_zone_empty(t_zone *zone)
 	return (1);
 }
 
-static void	remove_zone(t_zone *target)
+static void	remove_zone(t_zone *zone_to_remove)
 {
 	t_zone	*current;
 	t_zone	*prev;
@@ -23,7 +23,7 @@ static void	remove_zone(t_zone *target)
 	prev = NULL;
 	while (current)
 	{
-		if (current == target)
+		if (current == zone_to_remove)
 		{
 			if (prev)
 				prev->next = current->next;
@@ -58,10 +58,9 @@ void	free(void *ptr)
 		print_trace("[FREE] Freeing block");
 	if (block->zone->zone_type == LARGE)
 	{
+		remove_zone(block->zone);
 		if (config->trace)
 			print_trace("[FREE] Unmapping LARGE zone");
-		if (munmap((void *)block->zone, block->zone->zone_size) == -1)
-			perror("munmap");
 		return ;
 	}
 	block->is_free = 1;

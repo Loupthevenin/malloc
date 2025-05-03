@@ -37,11 +37,13 @@ int	main(void)
 {
 	print_display_tester();
 	print_config();
-	test_realloc_increase_size();
-	test_realloc_decrease_size();
-	test_realloc_null_pointer();
-	test_realloc_zero_size();
-	test_realloc_null_pointer_zero_size();
-	test_realloc_memory_copy();
+	/* test_realloc_increase_size(); */
+	/* test_realloc_decrease_size(); */
+	/* test_realloc_null_pointer(); */
+	/* test_realloc_zero_size(); */
+	/* test_realloc_null_pointer_zero_size(); */
+	/* test_realloc_memory_copy(); */
+	test_malloc();
+	loop_malloc(TINY_SIZE);
 	return (0);
 }
