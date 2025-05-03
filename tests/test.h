@@ -27,6 +27,15 @@ void	test_realloc_zero_size(void);
 void	test_realloc_null_pointer_zero_size(void);
 void	test_realloc_memory_copy(void);
 
+///////// FREE /////////
+void	test_free_simple(void);
+void	test_double_free(void);
+void	test_no_malloc(void);
+void	test_free_null(void);
+void	test_free_all_zones(void);
+void	test_zone_removed_when_empty(void);
+void	test_free_and_reuse(void);
+
 // *** Function TEST *** //
 ///////// MALLOC /////////
 void	test_find_zone(void);
