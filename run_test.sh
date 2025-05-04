@@ -15,7 +15,8 @@ echo "  [1] Valgrind --leak-check=full"
 echo "  [2] Valgrind --tool=massif"
 echo "  [3] AddressSanitizer (ASAN)"
 echo "  [4] ThreadSanitizer (TSAN)"
-read -r -p "👉 Choix [0-4] : " tool_choice
+echo "  [5] Valgrind --tool=helgrind"
+read -r -p "👉 Choix [0-5] : " tool_choice
 
 # Flags
 MALLOC_VERBOSE=0
@@ -34,6 +35,7 @@ case "$tool_choice" in
 2) VALGRIND_CMD="valgrind --tool=massif" ;;
 3) ASAN_MODE=1 ;;
 4) TSAN_MODE=1 ;;
+5) VALGRIND_CMD="valgrind --tool=helgrind" ;;
 esac
 
 # Compile le test

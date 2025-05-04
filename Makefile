@@ -66,7 +66,7 @@ $(OBJ_DIR)%.o: $(SRCS_DIR)%.c
 
 asan:
 	@$(MAKE) fclean
-	@(MAKE) DEBUG_FLAGS="-fsanitize=address -g" test
+	@$(MAKE) DEBUG_FLAGS="-fsanitize=address -g" test
 	@echo "$(MAGENTA)🧪 Compilation avec AddressSanitizer (ASAN) terminée$(RESET)"
 
 tsan:
