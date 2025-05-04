@@ -63,6 +63,7 @@ $(OBJ_DIR)%.o: $(SRCS_DIR)%.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 # === DEBUG ===
+# === TEST ===
 
 asan:
 	@$(MAKE) fclean
@@ -74,8 +75,6 @@ tsan:
 	@$(MAKE) DEBUG_FLAGS="-fsanitize=thread -g" test
 	@echo "$(MAGENTA)🧪 Compilation avec ThreadSanitizer (TSAN) terminée$(RESET)"
 
-# === TEST ===
-
 $(OBJ_DIR)%.o: $(TEST_DIR)%.c $(TEST_HEADERS)
 	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
@@ -85,14 +84,12 @@ test: $(TEST_OBJ) $(OBJS) $(LIBFT)
 	clear
 	@echo "$(YELLOW)🚀 Test compilé$(RESET)"
 
-run: test
+run: fclean test
 	@echo "$(CYAN)▶️  Exécution du test :$(RESET)"
 	@./$(TEST_NAME)
 
-script:
+script: fclean
 	@$(TEST_SCRIPT) $(TEST_NAME)
-
-run_all: run script
 
 # === CLEANUP ===
 
@@ -108,4 +105,4 @@ fclean:
 
 re: fclean all
 
-.PHONY: all clean fclean re link asan tsan test script run_all
+.PHONY: all clean fclean re link asan tsan test script

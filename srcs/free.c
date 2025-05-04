@@ -20,12 +20,36 @@ static t_block	*is_valid_malloc_ptr(void *ptr)
 	return (NULL);
 }
 
+// TODO: implement prev in block for more optimization;
+static void	merge_adjacent_blocks(t_block *block, t_debug_config *config)
+{
+	t_block	*current;
+
+	if (block->next && block->next->is_free)
+	{
+		log_trace_if(config, "[FREE] Merging with next free block");
+		block->size += block->next->size;
+		block->zone->used_size -= BLOCK_SIZE + block->next->size;
+		block->next = block->next->next;
+	}
+	current = block->zone->blocks;
+	while (current && current->next != block)
+		current = current->next;
+	if (current && current->is_free)
+	{
+		log_trace_if(config, "[FREE] Merging with previous free block");
+		current->size += block->size;
+		current->zone->used_size -= BLOCK_SIZE + block->size;
+		current->next = block->next;
+	}
+}
+
 static void	free_block(t_block *block, t_debug_config *config)
 {
 	block->is_free = 1;
-	// Attention si on fusionne les blocks !
 	block->zone->used_size -= block->size + BLOCK_SIZE;
 	log_trace_if(config, "[FREE] Marked block as free and updated zone usage");
+	merge_adjacent_blocks(block, config);
 	if (is_zone_empty(block->zone))
 	{
 		log_trace_if(config, "[FREE] Zone is empty, removing it");
@@ -52,7 +76,6 @@ static void	handle_free(void *ptr, t_debug_config *config)
 	free_block(block, config);
 }
 
-// TODO: Fusionner les blocks free adjacents
 void	free(void *ptr)
 {
 	t_debug_config	*config;

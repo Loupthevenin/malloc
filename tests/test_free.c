@@ -99,3 +99,28 @@ void	test_free_and_reuse(void)
 	assert(ptr1 == ptr2);
 	free(ptr2);
 }
+
+void	test_free_defragment(void)
+{
+	void *ptr1, *ptr2, *ptr3, *ptr4;
+	ft_putstr_fd("=== Test free defragment ===\n", 1);
+	ptr1 = malloc(64);
+	assert_ptr_not_null(ptr1, "malloc(64)");
+	ft_memset(ptr1, 'A', 64);
+	ptr2 = malloc(128);
+	assert_ptr_not_null(ptr2, "malloc(128)");
+	ft_memset(ptr2, 'A', 128);
+	ptr3 = malloc(256);
+	assert_ptr_not_null(ptr3, "malloc(256)");
+	ft_memset(ptr3, 'B', 256);
+	ptr4 = malloc(64);
+	assert_ptr_not_null(ptr4, "malloc(64)");
+	ft_memset(ptr4, 'A', 64);
+	show_alloc_mem_ex();
+	free(ptr2);
+	show_alloc_mem_ex();
+	free(ptr4);
+	show_alloc_mem_ex();
+	free(ptr1);
+	show_alloc_mem_ex();
+}

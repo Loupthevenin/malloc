@@ -45,6 +45,6 @@ int	main(void)
 {
 	print_display_tester();
 	print_config();
-	test_threads();
+	test_free_defragment();
 	return (0);
 }

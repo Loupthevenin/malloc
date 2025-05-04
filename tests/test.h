@@ -44,6 +44,7 @@ void				test_free_null(void);
 void				test_free_all_zones(void);
 void				test_zone_removed_when_empty(void);
 void				test_free_and_reuse(void);
+void				test_free_defragment(void);
 
 // *** Function TEST *** //
 ///////// MALLOC /////////
