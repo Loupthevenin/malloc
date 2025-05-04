@@ -2,6 +2,7 @@
 
 EXEC="./test_malloc"
 
+clear
 # Menu interactif
 echo -e "\n\033[1;35m=== Configuration Debug ===\033[0m"
 
@@ -68,4 +69,4 @@ echo ""
 MALLOC_VERBOSE=$MALLOC_VERBOSE \
 	MALLOC_TRACE=$MALLOC_TRACE \
 	MALLOC_FAIL=$MALLOC_FAIL \
-	LD_LIBRARY_PATH=. $VALGRIND_CMD $EXEC
+	$VALGRIND_CMD $EXEC

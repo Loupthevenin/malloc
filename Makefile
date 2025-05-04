@@ -56,7 +56,7 @@ link:
 	@echo "$(CYAN)🔗 Lien symbolique libft_malloc.so créé$(RESET)"
 
 $(LIBFT):
-	@make -C $(LIBFT_DIR)
+	@make -C $(LIBFT_DIR) DEBUG_FLAGS="$(DEBUG_FLAGS)"
 
 $(OBJ_DIR)%.o: $(SRCS_DIR)%.c
 	@mkdir -p $(OBJ_DIR)
@@ -80,14 +80,14 @@ $(OBJ_DIR)%.o: $(TEST_DIR)%.c $(TEST_HEADERS)
 	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-test: $(TEST_OBJ) $(LIBFT) $(NAME) link
-	@$(CC) $(CFLAGS) -o $(TEST_NAME) $(TEST_OBJ) -L . -lft_malloc
+test: $(TEST_OBJ) $(OBJS) $(LIBFT)
+	$(CC) $(CFLAGS) -o $(TEST_NAME) $(TEST_OBJ) $(OBJS) $(LIBFT_OBJS)
 	clear
 	@echo "$(YELLOW)🚀 Test compilé$(RESET)"
 
 run: test
 	@echo "$(CYAN)▶️  Exécution du test :$(RESET)"
-	@LD_LIBRARY_PATH=. ./$(TEST_NAME)
+	@./$(TEST_NAME)
 
 script:
 	@$(TEST_SCRIPT) $(TEST_NAME)

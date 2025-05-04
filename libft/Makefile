@@ -6,7 +6,7 @@
 #    By: ltheveni <ltheveni@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/12 18:30:28 by ltheveni          #+#    #+#              #
-#    Updated: 2025/05/03 14:27:54 by ltheveni         ###   ########.fr        #
+#    Updated: 2025/05/04 13:52:02 by ltheveni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,7 +65,8 @@ OBJS_PRINTF = $(SRCS_PRINTF:.c=.o)
 INCLUDE = -I . -I ft_printf
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra
+DEBUG_FLAGS ?=
+CFLAGS = -Wall -Werror -Wextra $(DEBUG_FLAGS)
 LIB = ar rc
 RM = rm -f
 
