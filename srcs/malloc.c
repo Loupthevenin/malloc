@@ -1,6 +1,7 @@
 #include "../includes/malloc.h"
 
 t_zone			*g_zone = NULL;
+pthread_mutex_t	g_lock = PTHREAD_MUTEX_INITIALIZER;
 
 static void	*get_memory(size_t size)
 {
@@ -118,7 +119,9 @@ void	*malloc(size_t size)
 	t_zone			*zone;
 	int				zone_type;
 	t_debug_config	*config;
+	void			*result;
 
+	pthread_mutex_lock(&g_lock);
 	config = init_debug_env();
 	if (config->verbose)
 	{
@@ -126,9 +129,15 @@ void	*malloc(size_t size)
 		print_size("[MALLOC] ", size);
 	}
 	if (log_fail_if(config, "[MALLOC] malloc forced to fail"))
+	{
+		pthread_mutex_unlock(&g_lock);
 		return (NULL);
+	}
 	if (!check_size(size))
+	{
+		pthread_mutex_unlock(&g_lock);
 		return (NULL);
+	}
 	block = NULL;
 	zone_type = which_zone(size);
 	zone = find_zone(zone_type, size);
@@ -137,6 +146,11 @@ void	*malloc(size_t size)
 	else
 		block = alloc_block_in_existing_zone(zone, size, zone_type, config);
 	if (!block)
+	{
+		pthread_mutex_unlock(&g_lock);
 		return (NULL);
-	return ((void *)(block + 1));
+	}
+	result = (void *)(block + 1);
+	pthread_mutex_unlock(&g_lock);
+	return (result);
 }

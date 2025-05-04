@@ -55,6 +55,7 @@ void	show_alloc_mem(void)
 	t_zone	*zone;
 	size_t	total;
 
+	pthread_mutex_lock(&g_lock);
 	zone = g_zone;
 	total = 0;
 	while (zone)
@@ -71,4 +72,5 @@ void	show_alloc_mem(void)
 	ft_putstr_fd("Total : ", 1);
 	ft_putsize_fd(total, 1);
 	ft_putstr_fd(" bytes\n", 1);
+	pthread_mutex_unlock(&g_lock);
 }

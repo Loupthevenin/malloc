@@ -32,11 +32,19 @@ void	free_all_zones(void)
 	g_zone = NULL;
 }
 
+void	test_threads(void)
+{
+	test_concurrent_malloc();
+	test_concurrent_realloc();
+	test_concurrent_show_alloc();
+	test_concurrent_double_free();
+}
+
 // TODO: loop_random size malloc
 int	main(void)
 {
 	print_display_tester();
 	print_config();
-	test_ex();
+	test_threads();
 	return (0);
 }

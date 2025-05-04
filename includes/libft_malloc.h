@@ -3,6 +3,7 @@
 
 # include "../libft/ft_printf/ft_printf.h"
 # include "../libft/libft.h"
+# include <pthread.h>
 # include <stdint.h>
 # include <stdlib.h>
 # include <sys/mman.h>
@@ -39,7 +40,7 @@ typedef struct	__attribute__((aligned(16))) s_block
 	int is_free;
 	struct s_block *next;
 	struct s_zone *zone;
-}				t_block;
+}						t_block;
 
 typedef struct	__attribute__((aligned(16))) s_zone
 {
@@ -48,14 +49,15 @@ typedef struct	__attribute__((aligned(16))) s_zone
 	size_t used_size;
 	t_block *blocks;
 	struct s_zone *next;
-}				t_zone;
+}						t_zone;
 
-extern t_zone	*g_zone;
+extern t_zone			*g_zone;
+extern pthread_mutex_t	g_lock;
 
-void			free(void *ptr);
-void			*malloc(size_t size);
-void			*realloc(void *ptr, size_t size);
-void			show_alloc_mem(void);
-void			show_alloc_mem_ex(void);
+void					free(void *ptr);
+void					*malloc(size_t size);
+void					*realloc(void *ptr, size_t size);
+void					show_alloc_mem(void);
+void					show_alloc_mem_ex(void);
 
 #endif

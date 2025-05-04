@@ -142,6 +142,7 @@ void	show_alloc_mem_ex(void)
 {
 	t_zone	*zone;
 
+	pthread_mutex_lock(&g_lock);
 	zone = g_zone;
 	while (zone)
 	{
@@ -154,4 +155,5 @@ void	show_alloc_mem_ex(void)
 		print_zone_blocks(zone);
 		zone = zone->next;
 	}
+	pthread_mutex_unlock(&g_lock);
 }

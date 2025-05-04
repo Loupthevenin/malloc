@@ -85,6 +85,7 @@ size_t	get_size(size_t size, int zone_type)
 {
 	size_t	result;
 
+	result = 0;
 	if (zone_type == TINY)
 		result = get_zone_size(TINY_SIZE);
 	else if (zone_type == SMALL)

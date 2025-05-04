@@ -57,12 +57,21 @@ void	free(void *ptr)
 {
 	t_debug_config	*config;
 
+	pthread_mutex_lock(&g_lock);
 	config = init_debug_env();
 	if (config->verbose)
 		print_custom("[FREE] FREE");
 	if (log_fail_if(config, "[FREE] free forced to fail"))
+	{
+		pthread_mutex_unlock(&g_lock);
 		return ;
+	}
 	if (!ptr)
-		return (log_trace_if(config, "[FREE] NULL pointer"));
+	{
+		log_trace_if(config, "[FREE] NULL pointer");
+		pthread_mutex_unlock(&g_lock);
+		return ;
+	}
 	handle_free(ptr, config);
+	pthread_mutex_unlock(&g_lock);
 }
