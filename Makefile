@@ -24,7 +24,8 @@ TEST_OBJ = $(patsubst $(TEST_DIR)%.c, $(OBJ_DIR)%.o, $(TEST_SRC))
 TEST_HEADERS = $(wildcard $(TEST_DIR)*.h)
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -fPIC
+DEBUG_FLAGS ?=
+CFLAGS = -Wall -Wextra -Werror -fPIC $(DEBUG_FLAGS)
 AR = ar rc
 RM = rm -rf
 
@@ -47,7 +48,7 @@ OBJS = $(addprefix $(OBJ_DIR), $(SRC_FILES:.c=.o))
 all: $(LIBFT) $(NAME) link
 
 $(NAME): $(OBJS) $(LIBFT)
-	@$(CC) -shared -o $(NAME) $(OBJS) $(LIBFT_OBJS)
+	@$(CC) $(CFLAGS) -shared -o $(NAME) $(OBJS) $(LIBFT_OBJS)
 	@echo "$(GREEN)✅ Bibliothèque partagée $(NAME) créée$(RESET)"
 
 link:
@@ -61,6 +62,18 @@ $(OBJ_DIR)%.o: $(SRCS_DIR)%.c
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
+# === DEBUG ===
+
+asan:
+	@$(MAKE) fclean
+	@(MAKE) DEBUG_FLAGS="-fsanitize=address -g" test
+	@echo "$(MAGENTA)🧪 Compilation avec AddressSanitizer (ASAN) terminée$(RESET)"
+
+tsan:
+	@$(MAKE) fclean
+	@$(MAKE) DEBUG_FLAGS="-fsanitize=thread -g" test
+	@echo "$(MAGENTA)🧪 Compilation avec ThreadSanitizer (TSAN) terminée$(RESET)"
+
 # === TEST ===
 
 $(OBJ_DIR)%.o: $(TEST_DIR)%.c $(TEST_HEADERS)
@@ -68,7 +81,7 @@ $(OBJ_DIR)%.o: $(TEST_DIR)%.c $(TEST_HEADERS)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 test: $(TEST_OBJ) $(LIBFT) $(NAME) link
-	@$(CC) -o $(TEST_NAME) $(TEST_OBJ) -L . -lft_malloc
+	@$(CC) $(CFLAGS) -o $(TEST_NAME) $(TEST_OBJ) -L . -lft_malloc
 	clear
 	@echo "$(YELLOW)🚀 Test compilé$(RESET)"
 
@@ -95,4 +108,4 @@ fclean:
 
 re: fclean all
 
-.PHONY: all clean fclean re link test script run_all
+.PHONY: all clean fclean re link asan tsan test script run_all
