@@ -125,6 +125,8 @@ void	*malloc(size_t size)
 		print_custom("[MALLOC] MALLOC");
 		print_size("[MALLOC] ", size);
 	}
+	if (log_fail_if(config, "[MALLOC] malloc forced to fail"))
+		return (NULL);
 	if (!check_size(size))
 		return (NULL);
 	block = NULL;

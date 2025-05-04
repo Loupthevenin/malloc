@@ -165,9 +165,16 @@ void	print_memory(size_t size)
 	ft_putstr_fd("\n" RESET, 1);
 }
 
-void	print_trace(char *message)
+static void	print_trace(char *message)
 {
 	ft_putstr_fd(PURPLE "[TRACE] ", 1);
+	ft_putendl_fd(message, 1);
+	ft_putstr_fd(RESET, 1);
+}
+
+static void	print_fail(char *message)
+{
+	ft_putstr_fd(RED "[FAIL] ", 1);
 	ft_putendl_fd(message, 1);
 	ft_putstr_fd(RESET, 1);
 }
@@ -176,4 +183,14 @@ void	log_trace_if(t_debug_config *config, char *message)
 {
 	if (config->trace)
 		print_trace(message);
+}
+
+int	log_fail_if(t_debug_config *config, char *message)
+{
+	if (config->fail)
+	{
+		print_fail(message);
+		return (1);
+	}
+	return (0);
 }

@@ -52,6 +52,8 @@ void	*realloc(void *ptr, size_t size)
 		print_custom("[REALLOC] REALLOC");
 		print_size("[REALLOC] ", size);
 	}
+	if (log_fail_if(config, "[REALLOC] realloc forced to fail"))
+		return (NULL);
 	if (!ptr)
 		return (handle_null_ptr(size, config));
 	if (size == 0)
