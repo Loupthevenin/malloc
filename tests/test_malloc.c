@@ -87,7 +87,7 @@ void	illegal_number(void)
 		free(ptr);
 }
 
-void	loop_malloc(size_t size)
+void	loop_malloc(size_t size, int show_alloc)
 {
 	int		i;
 	int		max_alloc;
@@ -103,8 +103,11 @@ void	loop_malloc(size_t size)
 		i++;
 	}
 	i = 0;
-	show_alloc_mem();
-	show_alloc_mem_ex();
+	if (show_alloc)
+	{
+		show_alloc_mem();
+		show_alloc_mem_ex();
+	}
 	while (i < max_alloc)
 		free(ptrs[i++]);
 }
@@ -118,7 +121,7 @@ void	test_malloc_structures(void)
 	void	*expected_ptr;
 
 	ft_putstr_fd("=== STRUCTURAL TEST START ===\n", 1);
-	ptr = malloc(TINY_SIZE); // Déclenche creation d'une TINY zone
+	ptr = malloc(TINY_SIZE);
 	assert_ptr_not_null(ptr, "malloc(TINY_SIZE)");
 	// Vérifie zone globale
 	z = g_zone;

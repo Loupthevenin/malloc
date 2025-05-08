@@ -22,7 +22,7 @@ static void	*thread_malloc(void *arg)
 			ft_putnbr_fd(id, 1);
 			ft_putstr_fd(": malloc failed\n", 1);
 			pthread_mutex_unlock(mutex);
-			exit(1);
+			return (NULL);
 		}
 		free(ptr);
 		i++;

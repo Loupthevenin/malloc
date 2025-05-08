@@ -24,17 +24,9 @@ typedef struct s_thread_arg
 ///////// MALLOC /////////
 void				illegal_number(void);
 void				test_malloc(void);
-void				loop_malloc(size_t size);
+void				loop_malloc(size_t size, int show_alloc);
 void				test_malloc_structures(void);
 void				test_ex(void);
-
-///////// REALLOC /////////
-void				test_realloc_increase_size(void);
-void				test_realloc_decrease_size(void);
-void				test_realloc_null_pointer(void);
-void				test_realloc_zero_size(void);
-void				test_realloc_null_pointer_zero_size(void);
-void				test_realloc_memory_copy(void);
 
 ///////// FREE /////////
 void				test_free_simple(void);
@@ -45,6 +37,14 @@ void				test_free_all_zones(void);
 void				test_zone_removed_when_empty(void);
 void				test_free_and_reuse(void);
 void				test_free_defragment(void);
+
+///////// REALLOC /////////
+void				test_realloc_increase_size(void);
+void				test_realloc_decrease_size(void);
+void				test_realloc_null_pointer(void);
+void				test_realloc_zero_size(void);
+void				test_realloc_null_pointer_zero_size(void);
+void				test_realloc_memory_copy(void);
 
 // *** Function TEST *** //
 ///////// MALLOC /////////

@@ -60,9 +60,10 @@ void	test_find_zone(void)
 	result = find_zone(SMALL, 200);
 	assert_ptr_null(result,
 					"Should return (NULL when no zone has enough space)");
-	/* free(zone1); */
-	/* free(zone2); */
-	/* free(zone3); */
+	free(zone1);
+	free(zone2);
+	free(zone3);
+	g_zone = NULL;
 }
 
 // Test function find_free_block();
@@ -86,9 +87,9 @@ void	test_find_free_block(void)
 	found_block = find_free_block(zone, 512);
 	assert_ptr_null(found_block,
 					"find_free_block should return (NULL when no block fits");
-	/* free(zone); */
-	/* free(block1); */
-	/* free(block2); */
+	free(zone);
+	free(block1);
+	free(block2);
 }
 
 // Test function add_block_to_zone();
@@ -108,8 +109,8 @@ void	test_add_block_to_zone(void)
 	assert_ptr_not_null(current,
 						"Block should be the first element in the zone's blocks");
 	assert_ptr_null(current->next, "Next pointer of the block should be NULL");
-	/* free(zone); */
-	/* free(block); */
+	free(zone);
+	free(block);
 }
 
 // Test block libre trouvé
