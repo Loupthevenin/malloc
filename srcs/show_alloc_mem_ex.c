@@ -99,6 +99,9 @@ static void	print_zone_header(t_zone *zone)
 	ft_putstr_fd(RESET " | " CYAN "Zone size: " RESET, 1);
 	ft_putstr_fd(BLUE, 1);
 	ft_putsize_fd(zone->zone_size, 1);
+	ft_putstr_fd(RESET " bytes | " CYAN "Zone used: " RESET, 1);
+	ft_putstr_fd(BLUE, 1);
+	ft_putsize_fd(zone->used_size, 1);
 	ft_putstr_fd(RESET " bytes | " CYAN "Type: " RESET, 1);
 	if (zone->zone_type == TINY)
 		ft_putstr_fd(GREEN "TINY", 1);
