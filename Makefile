@@ -62,33 +62,22 @@ $(OBJ_DIR)%.o: $(SRCS_DIR)%.c
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-# === DEBUG ===
 # === TEST ===
-
-asan:
-	@$(MAKE) fclean
-	@$(MAKE) DEBUG_FLAGS="-fsanitize=address -g" test
-	@echo "$(MAGENTA)🧪 Compilation avec AddressSanitizer (ASAN) terminée$(RESET)"
-
-tsan:
-	@$(MAKE) fclean
-	@$(MAKE) DEBUG_FLAGS="-fsanitize=thread -g" test
-	@echo "$(MAGENTA)🧪 Compilation avec ThreadSanitizer (TSAN) terminée$(RESET)"
 
 $(OBJ_DIR)%.o: $(TEST_DIR)%.c $(TEST_HEADERS)
 	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-test: $(TEST_OBJ) $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) -o $(TEST_NAME) $(TEST_OBJ) $(OBJS) $(LIBFT_OBJS)
+test: $(TEST_OBJ) $(LIBFT) $(NAME) link
+	$(CC) $(CFLAGS) -o $(TEST_NAME) $(TEST_OBJ) -L . -lft_malloc
 	clear
 	@echo "$(YELLOW)🚀 Test compilé$(RESET)"
 
-run: fclean test
+run: test
 	@echo "$(CYAN)▶️  Exécution du test :$(RESET)"
-	@./$(TEST_NAME)
+	@LD_LIBRARY_PATH=. ./$(TEST_NAME)
 
-script: fclean
+script:
 	@$(TEST_SCRIPT) $(TEST_NAME)
 
 # === CLEANUP ===
@@ -105,4 +94,4 @@ fclean:
 
 re: fclean all
 
-.PHONY: all clean fclean re link asan tsan test script
+.PHONY: all clean fclean re link test script
