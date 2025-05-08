@@ -123,4 +123,5 @@ void	test_free_defragment(void)
 	show_alloc_mem_ex();
 	free(ptr1);
 	show_alloc_mem_ex();
+	free(ptr3);
 }
