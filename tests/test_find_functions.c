@@ -90,6 +90,7 @@ void	test_find_free_block(void)
 	free(zone);
 	free(block1);
 	free(block2);
+	g_zone = NULL;
 }
 
 // Test function add_block_to_zone();
@@ -111,6 +112,7 @@ void	test_add_block_to_zone(void)
 	assert_ptr_null(current->next, "Next pointer of the block should be NULL");
 	free(zone);
 	free(block);
+	g_zone = NULL;
 }
 
 // Test block libre trouvé
@@ -136,4 +138,5 @@ void	test_reuse_free_block(void)
 	assert_int_equals(0, result->is_free, "Block should be marked as used");
 	free(block);
 	free(zone);
+	g_zone = NULL;
 }
