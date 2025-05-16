@@ -1,4 +1,5 @@
 #include "test.h"
+#include <stdlib.h>
 
 void	test_malloc(void)
 {
@@ -143,4 +144,19 @@ void	test_malloc_structures(void)
 	assert_true(ptr == expected_ptr, "malloc returned payload ptr");
 	ft_putstr_fd("✅ STRUCTURAL TEST OK\n", 1);
 	free(ptr);
+}
+
+void	test_merge(void)
+{
+	void	*a;
+	void	*b;
+	void	*c;
+
+	a = malloc(64);
+	b = malloc(64);
+	c = malloc(64);
+	free(a);
+	free(b);
+	free(c);
+	show_alloc_mem_ex();
 }

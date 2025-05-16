@@ -66,13 +66,12 @@ void	tester_illegal(void)
 	test_free_and_reuse();
 }
 
-// FIX: probleme boucle infini
 void	tester_threads(void)
 {
 	test_concurrent_malloc();
-	/* test_concurrent_realloc(); */
-	/* test_concurrent_show_alloc(); */
-	/* test_concurrent_double_free(); */
+	test_concurrent_realloc();
+	test_concurrent_show_alloc();
+	test_concurrent_double_free();
 }
 
 void	tester_colors(void)
@@ -85,10 +84,11 @@ int	main(void)
 {
 	print_display_tester();
 	print_config();
-	tester_threads();
-	/* tester_malloc(); */
-	/* tester_free(); */
-	/* tester_realloc(); */
-	/* tester_function(); */
+	tester_malloc();
+	tester_free();
+	tester_realloc();
+	tester_function();
+	tester_colors();
+	/* test_merge(); */
 	return (0);
 }

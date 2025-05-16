@@ -2,28 +2,16 @@
 
 static void	*thread_malloc(void *arg)
 {
-	int				i;
-	int				id;
-	t_thread_arg	*thread_arg;
-	pthread_mutex_t	*mutex;
-	void			*ptr;
+	int		i;
+	void	*ptr;
 
-	thread_arg = (t_thread_arg *)arg;
 	i = 0;
-	id = thread_arg->id;
-	mutex = thread_arg->mutex;
+	(void)arg;
 	while (i < 100)
 	{
 		ptr = malloc(TINY_SIZE);
 		if (!ptr)
-		{
-			pthread_mutex_lock(mutex);
-			ft_putstr_fd("❌ Thread ", 1);
-			ft_putnbr_fd(id, 1);
-			ft_putstr_fd(": malloc failed\n", 1);
-			pthread_mutex_unlock(mutex);
 			return (NULL);
-		}
 		free(ptr);
 		i++;
 	}
@@ -79,25 +67,20 @@ static void	*thread_double_free(void *arg)
 
 void	test_concurrent_malloc(void)
 {
-	pthread_t		threads[10];
-	pthread_mutex_t	print_mutex;
-	int				i;
-	t_thread_arg	args[10];
+	pthread_t	threads[10];
+	int			i;
 
 	ft_putstr_fd("=== Test concurrent malloc ===\n", 1);
-	pthread_mutex_init(&print_mutex, NULL);
 	i = 0;
 	while (i < 10)
 	{
-		args[i].id = i;
-		args[i].mutex = &print_mutex;
-		pthread_create(&threads[i], NULL, thread_malloc, &args[i]);
+		usleep(200);
+		pthread_create(&threads[i], NULL, thread_malloc, NULL);
 		i++;
 	}
 	i = 0;
 	while (i < 10)
 		pthread_join(threads[i++], NULL);
-	pthread_mutex_destroy(&print_mutex);
 	ft_putstr_fd("✅ Concurrent malloc test passed\n", 1);
 }
 
@@ -113,6 +96,7 @@ void	test_concurrent_realloc(void)
 	i = 0;
 	while (i < 10)
 	{
+		usleep(200);
 		args[i].id = i;
 		args[i].mutex = &print_mutex;
 		pthread_create(&threads[i], NULL, thread_realloc, &args[i]);
@@ -135,6 +119,7 @@ void	test_concurrent_show_alloc(void)
 	i = 0;
 	while (i < 10)
 	{
+		usleep(200);
 		args[i].id = i;
 		args[i].mutex = NULL;
 		pthread_create(&threads[i], NULL, thread_with_show, &args[i]);

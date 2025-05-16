@@ -46,6 +46,9 @@ void				test_realloc_zero_size(void);
 void				test_realloc_null_pointer_zero_size(void);
 void				test_realloc_memory_copy(void);
 
+///////// FRAGMENT /////////
+void				test_merge(void);
+
 // *** Function TEST *** //
 ///////// MALLOC /////////
 void				test_find_zone(void);
