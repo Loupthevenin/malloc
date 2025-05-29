@@ -1,11 +1,12 @@
 #include "test.h"
 
-void	assert_ptr_not_null(void *ptr, char *msg)
+int	assert_ptr_not_null(void *ptr, char *msg)
 {
 	if (!ptr)
 	{
 		ft_putstr_fd("❌ FAIL: ", 1);
 		ft_putendl_fd(msg, 1);
+		return (0);
 	}
 	else
 	{
@@ -14,10 +15,11 @@ void	assert_ptr_not_null(void *ptr, char *msg)
 		ft_putstr_fd("\n", 1);
 		ft_putptr(ptr);
 		ft_putstr_fd("\n", 1);
+		return (1);
 	}
 }
 
-void	assert_ptr_null(void *ptr, char *msg)
+int	assert_ptr_null(void *ptr, char *msg)
 {
 	if (!ptr)
 	{
@@ -26,11 +28,13 @@ void	assert_ptr_null(void *ptr, char *msg)
 		ft_putstr_fd("\n", 1);
 		ft_putptr(ptr);
 		ft_putstr_fd("\n", 1);
+		return (0);
 	}
 	else
 	{
 		ft_putstr_fd("❌ FAIL: ", 1);
 		ft_putendl_fd(msg, 1);
+		return (1);
 	}
 }
 

@@ -7,8 +7,8 @@
 # include <pthread.h>
 
 // UTILS
-void				assert_ptr_not_null(void *ptr, char *msg);
-void				assert_ptr_null(void *ptr, char *msg);
+int					assert_ptr_not_null(void *ptr, char *msg);
+int					assert_ptr_null(void *ptr, char *msg);
 void				assert_ptr_equal(void *a, void *b, char *msg);
 void				assert_int_equals(int a, int b, char *msg);
 void				assert_true(int cond, char *msg);

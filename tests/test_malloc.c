@@ -7,19 +7,28 @@ void	test_malloc(void)
 	char	*mem;
 	int		*small;
 	char	*large;
+	int		error;
 
+	error = 0;
 	ft_putstr_fd("=== simple test malloc ===\n", 1);
 	ptr = malloc(TINY_SIZE);
-	assert_ptr_not_null(ptr, "malloc(TINY_SIZE)");
+	if (!assert_ptr_not_null(ptr, "malloc(TINY_SIZE)"))
+		error++;
 	mem = malloc(64);
-	assert_ptr_not_null(mem, "malloc(64)");
-	ft_memset(mem, 'A', 64);
+	if (!assert_ptr_not_null(mem, "malloc(64)"))
+		error++;
+	if (mem)
+		ft_memset(mem, 'A', 64);
 	small = malloc(600);
-	assert_ptr_not_null(small, "malloc(600)");
-	ft_memset(small, 5, 600);
+	if (!assert_ptr_not_null(small, "malloc(600)"))
+		error++;
+	if (small)
+		ft_memset(small, 5, 600);
 	large = malloc(60000);
-	assert_ptr_not_null(large, "malloc(60000)");
-	ft_memset(large, 'B', 60000);
+	if (!assert_ptr_not_null(large, "malloc(60000)"))
+		error++;
+	if (large)
+		ft_memset(large, 'B', 60000);
 	show_alloc_mem();
 	if (ptr)
 		free(ptr);
@@ -29,6 +38,8 @@ void	test_malloc(void)
 		free(small);
 	if (large)
 		free(large);
+	if (error)
+		exit(1);
 }
 
 void	test_ex(void)
