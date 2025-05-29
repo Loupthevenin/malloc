@@ -76,15 +76,32 @@ void	add_block_to_zone(t_zone *zone, t_block *new_block)
 	}
 }
 
+/**
+ * @brief get_zone_size
+	- Calcule la taille totale nécessaire pour une zone mémoire.
+ *
+ * La zone doit contenir au moins MIN_BLOCKS_PER_ZONE blocs, chacun pouvant
+ * avoir une taille max_alloc_size + BLOCK_SIZE (en-tête bloc).
+ *
+ * La taille totale intègre aussi la taille de l'en-tête de zone
+ * (ZONE_SIZE)
+ * et est arrondie à la taille de la page mémoire pour une allocation
+ * mmap alignée.
+ *
+ * @param max_alloc_size Taille max d'un bloc utilisateur dans la zone
+ * @return Taille totale de la zone, alignée sur page mémoire
+ */
 size_t	get_zone_size(size_t max_alloc_size)
 {
 	size_t	page_size;
 	size_t	total_max_alloc;
 	size_t	total_zone;
 
+	// page mémoire
 	page_size = get_page_size();
 	total_max_alloc = (max_alloc_size + BLOCK_SIZE) * MIN_BLOCKS_PER_ZONE;
 	total_zone = total_max_alloc + ZONE_SIZE;
+	// arrondie à la page mémoire la plus proche supérieure
 	return (((total_zone + page_size - 1) / page_size) * page_size);
 }
 
@@ -102,6 +119,17 @@ size_t	get_size(size_t size, int zone_type)
 	return (result);
 }
 
+/**
+ * @brief align_ptr - Aligne un pointeur vers la multiple suivant de ALIGNMENT.
+ *
+ * Cela permet de respecter les contraintes d'alignement mémoire
+ * (8 ou 16 octets),
+ * évitant les problème de performance ou erreurs
+ * CPU sur certaines architectures.
+ *
+ * @param ptr Pointeur brut à aligner
+ * @return Pointeur aligné (>= ptr)
+ */
 void	*align_ptr(void *ptr)
 {
 	uintptr_t	p;
