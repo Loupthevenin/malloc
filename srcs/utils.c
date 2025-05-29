@@ -7,58 +7,6 @@ int	check_size(size_t size)
 	return (1);
 }
 
-void	print_zone_debug(void)
-{
-	t_zone	*zone;
-	t_block	*block;
-	int		i;
-	int		j;
-	int		safety;
-
-	zone = g_zone;
-	i = 0;
-	while (zone)
-	{
-		j = 0;
-		safety = 1000;
-		block = zone->blocks;
-		ft_putstr_fd("ZONE #", 1);
-		ft_putnbr_fd(i++, 1);
-		ft_putstr_fd(" - type: ", 1);
-		ft_putsize_fd(zone->zone_type, 1);
-		ft_putstr_fd(" | size: ", 1);
-		ft_putsize_fd(zone->zone_size, 1);
-		ft_putstr_fd(" | used: ", 1);
-		ft_putsize_fd(zone->used_size, 1);
-		ft_putstr_fd(" | address: ", 1);
-		ft_putptr((void *)zone);
-		ft_putendl_fd("", 1);
-		while (block && safety--)
-		{
-			ft_putstr_fd("BLOCK #", 1);
-			ft_putnbr_fd(j++, 1);
-			ft_putstr_fd(" - size ", 1);
-			ft_putsize_fd(block->size, 1);
-			ft_putstr_fd(" | free: ", 1);
-			ft_putsize_fd(block->is_free, 1);
-			ft_putstr_fd(" | addr: ", 1);
-			ft_putptr((void *)block);
-			ft_putstr_fd(" | next: ", 1);
-			ft_putptr((void *)block->next);
-			ft_putstr_fd(" | prev: ", 1);
-			ft_putptr((void *)block->prev);
-			ft_putendl_fd("", 1);
-			block = block->next;
-		}
-		if (safety <= 0)
-		{
-			ft_putstr_fd("ERROR INFINITE LOOP", 1);
-			break ;
-		}
-		zone = zone->next;
-	}
-}
-
 void	init_block(t_zone *current_zone, size_t size, t_block *block)
 {
 	block->size = size;

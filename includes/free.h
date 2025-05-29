@@ -11,7 +11,6 @@ void	print_size(char *message, size_t size);
 void	print_memory(size_t size);
 void	log_trace_if(t_debug_config *config, char *message);
 int		log_fail_if(t_debug_config *config, char *message);
-void	print_zone_debug(void);
 
 // UTILS
 int		is_zone_empty(t_zone *zone);
