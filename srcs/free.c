@@ -1,6 +1,6 @@
 #include "../includes/free.h"
 
-t_block	*is_valid_malloc_ptr(void *ptr, t_debug_config *config)
+t_block	*is_valid_malloc_ptr(void *ptr)
 {
 	t_zone	*zone;
 	t_block	*block;
@@ -74,7 +74,7 @@ static void	handle_free(void *ptr, t_debug_config *config)
 {
 	t_block	*block;
 
-	block = is_valid_malloc_ptr(ptr, config);
+	block = is_valid_malloc_ptr(ptr);
 	if (!block)
 		return (log_trace_if(config,
 								"[FREE] Invalid or unknown pointer passed to free"));
