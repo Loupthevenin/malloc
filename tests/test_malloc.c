@@ -146,17 +146,51 @@ void	test_malloc_structures(void)
 	free(ptr);
 }
 
-void	test_merge(void)
+void	test_merge_1(void)
 {
 	void	*a;
 	void	*b;
 	void	*c;
+	void	*d;
 
-	a = malloc(64);
-	b = malloc(64);
-	c = malloc(64);
+	a = malloc(256);
+	b = malloc(256);
+	c = malloc(256);
+	show_alloc_mem_ex();
 	free(a);
 	free(b);
+	show_alloc_mem_ex();
+	d = malloc(256 + 256);
+	show_alloc_mem_ex();
 	free(c);
+	free(d);
+}
+
+void	test_merge_2(void)
+{
+	void *a, *b, *c, *d;
+	a = malloc(256);
+	b = malloc(256);
+	c = malloc(256);
+	show_alloc_mem_ex();
+	free(a);
+	free(c);
+	d = malloc(512);
+	show_alloc_mem_ex();
+	free(b);
+	free(d);
+}
+
+void	test_merge_3(void)
+{
+	void *a, *b, *c;
+	a = malloc(256);
+	b = malloc(256);
+	c = malloc(256);
+	show_alloc_mem_ex();
+	free(b);
+	free(c);
+	show_alloc_mem_ex();
+	free(a);
 	show_alloc_mem_ex();
 }

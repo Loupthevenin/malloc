@@ -11,6 +11,7 @@ void	print_size(char *message, size_t size);
 void	print_memory(size_t size);
 void	log_trace_if(t_debug_config *config, char *message);
 int		log_fail_if(t_debug_config *config, char *message);
+void	print_zone_debug(void);
 
 // MAIN_FUNCTION
 t_block	*alloc_block_in_existing_zone(t_zone *zone, size_t size, int zone_type,
@@ -18,7 +19,7 @@ t_block	*alloc_block_in_existing_zone(t_zone *zone, size_t size, int zone_type,
 
 // UTILS
 int		check_size(size_t size);
-void	init_block(t_zone **current_zone, size_t size, t_block **block);
+void	init_block(t_zone *current_zone, size_t size, t_block *block);
 int		which_zone(size_t size);
 t_zone	*find_zone(int zone_type, size_t size);
 t_block	*find_free_block(t_zone *zone, size_t size);

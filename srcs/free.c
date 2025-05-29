@@ -1,6 +1,6 @@
 #include "../includes/free.h"
 
-static t_block	*is_valid_malloc_ptr(void *ptr)
+t_block	*is_valid_malloc_ptr(void *ptr, t_debug_config *config)
 {
 	t_zone	*zone;
 	t_block	*block;
@@ -20,40 +20,53 @@ static t_block	*is_valid_malloc_ptr(void *ptr)
 	return (NULL);
 }
 
-// TODO: implement prev in block for more optimization;
-static void	merge_adjacent_blocks(t_block *block, t_debug_config *config)
+static t_block	*merge_adjacent_blocks(t_block *block, t_debug_config *config)
 {
-	t_block	*current;
+	t_block	*prev;
+	t_block	*next;
+	t_zone	*zone;
+	size_t	total_freed_size;
 
-	if (block->next && block->next->is_free)
+	next = block->next;
+	prev = block->prev;
+	zone = block->zone;
+	total_freed_size = BLOCK_SIZE + block->size;
+	if (next && next->is_free && next != block)
 	{
 		log_trace_if(config, "[FREE] Merging with next free block");
-		block->size += block->next->size;
-		block->zone->used_size -= BLOCK_SIZE + block->next->size;
-		block->next = block->next->next;
+		block->size += next->size + BLOCK_SIZE;
+		total_freed_size += BLOCK_SIZE;
+		block->next = next->next;
+		if (block->next)
+			block->next->prev = block;
 	}
-	current = block->zone->blocks;
-	while (current && current->next != block)
-		current = current->next;
-	if (current && current->is_free)
+	if (prev && prev->is_free && prev != block)
 	{
 		log_trace_if(config, "[FREE] Merging with previous free block");
-		current->size += block->size;
-		current->zone->used_size -= BLOCK_SIZE + block->size;
-		current->next = block->next;
+		prev->size += block->size + BLOCK_SIZE;
+		/* total_freed_size += BLOCK_SIZE; */
+		prev->next = block->next;
+		if (block->next)
+			block->next->prev = prev;
+		block = prev;
 	}
+	zone->used_size -= total_freed_size;
+	return (block);
 }
 
 static void	free_block(t_block *block, t_debug_config *config)
 {
+	t_zone	*zone;
+
+	zone = block->zone;
 	block->is_free = 1;
-	block->zone->used_size -= block->size + BLOCK_SIZE;
-	log_trace_if(config, "[FREE] Marked block as free and updated zone usage");
-	merge_adjacent_blocks(block, config);
+	log_trace_if(config, "[FREE] Marked block as free");
+	block = merge_adjacent_blocks(block, config);
+	log_trace_if(config, "[FREE] Updated zone used");
 	if (is_zone_empty(block->zone))
 	{
 		log_trace_if(config, "[FREE] Zone is empty, removing it");
-		remove_zone(block->zone);
+		remove_zone(zone);
 	}
 }
 
@@ -61,7 +74,7 @@ static void	handle_free(void *ptr, t_debug_config *config)
 {
 	t_block	*block;
 
-	block = is_valid_malloc_ptr(ptr);
+	block = is_valid_malloc_ptr(ptr, config);
 	if (!block)
 		return (log_trace_if(config,
 								"[FREE] Invalid or unknown pointer passed to free"));

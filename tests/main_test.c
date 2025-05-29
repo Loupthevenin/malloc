@@ -53,6 +53,7 @@ void	tester_stress(void)
 	loop_malloc(100, 0);
 }
 
+// UP
 void	tester_illegal(void)
 {
 	// MALLOC
@@ -87,8 +88,5 @@ int	main(void)
 	tester_malloc();
 	tester_free();
 	tester_realloc();
-	tester_function();
-	tester_colors();
-	/* test_merge(); */
 	return (0);
 }

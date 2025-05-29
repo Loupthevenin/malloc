@@ -47,7 +47,9 @@ void				test_realloc_null_pointer_zero_size(void);
 void				test_realloc_memory_copy(void);
 
 ///////// FRAGMENT /////////
-void				test_merge(void);
+void				test_merge_1(void);
+void				test_merge_2(void);
+void				test_merge_3(void);
 
 // *** Function TEST *** //
 ///////// MALLOC /////////

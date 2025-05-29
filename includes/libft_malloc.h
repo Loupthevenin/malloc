@@ -39,6 +39,7 @@ typedef struct	__attribute__((aligned(16))) s_block
 	size_t size;
 	int is_free;
 	struct s_block *next;
+	struct s_block *prev;
 	struct s_zone *zone;
 }						t_block;
 
