@@ -1,5 +1,4 @@
 #include "test.h"
-#include <stdlib.h>
 
 void	test_malloc(void)
 {
@@ -99,31 +98,6 @@ void	illegal_number(void)
 		free(ptr);
 }
 
-void	loop_malloc(size_t size, int show_alloc)
-{
-	int		i;
-	int		max_alloc;
-	void	*ptrs[500];
-
-	ft_putstr_fd("=== loop malloc ===\n", 1);
-	i = 0;
-	max_alloc = 500;
-	while (i < max_alloc)
-	{
-		ptrs[i] = malloc(size);
-		assert_ptr_not_null(ptrs[i], "loop_malloc()");
-		i++;
-	}
-	i = 0;
-	if (show_alloc)
-	{
-		show_alloc_mem();
-		show_alloc_mem_ex();
-	}
-	while (i < max_alloc)
-		free(ptrs[i++]);
-}
-
 void	test_malloc_structures(void)
 {
 	void	*ptr;
@@ -204,4 +178,59 @@ void	test_merge_3(void)
 	show_alloc_mem_ex();
 	free(a);
 	show_alloc_mem_ex();
+}
+
+void	test_stress_alloc(void)
+{
+	void	*blocks[STRESS_COUNT] = {0};
+	int		idx;
+	int		op;
+	size_t	size;
+	size_t	new_size;
+	void	*new_ptr;
+
+	ft_putstr_fd("=== illegal number ===\n", 1);
+	for (int i = 0; i < STRESS_COUNT; i++)
+	{
+		idx = rand() % STRESS_COUNT;
+		op = rand() % 3;
+		if (op == 0)
+		{
+			if (!blocks[idx])
+			{
+				size = rand() % MAX_STRESS_ALLOC + 1;
+				blocks[idx] = malloc(size);
+				if (!assert_ptr_not_null(blocks[idx], "malloc(stress)"))
+					return ;
+				ft_memset(blocks[idx], 0xAA, size);
+			}
+		}
+		else if (op == 1)
+		{
+			if (blocks[idx])
+			{
+				new_size = rand() % MAX_STRESS_ALLOC + 1;
+				new_ptr = realloc(blocks[idx], new_size);
+				if (!assert_ptr_not_null(new_ptr, "realloc(stress)"))
+					return ;
+				blocks[idx] = new_ptr;
+				ft_memset(new_ptr, 0xBB, new_size);
+			}
+		}
+		else if (op == 2)
+		{
+			if (blocks[idx])
+			{
+				free(blocks[idx]);
+				blocks[idx] = NULL;
+			}
+		}
+		if (i % 100 == 0)
+		{
+			show_alloc_mem();
+		}
+	}
+	for (int i = 0; i < STRESS_COUNT; i++)
+		if (blocks[i])
+			free(blocks[i]);
 }

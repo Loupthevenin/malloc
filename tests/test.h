@@ -6,6 +6,9 @@
 # include <assert.h>
 # include <pthread.h>
 
+# define STRESS_COUNT 1000
+# define MAX_STRESS_ALLOC 4096
+
 // UTILS
 int					assert_ptr_not_null(void *ptr, char *msg);
 int					assert_ptr_null(void *ptr, char *msg);
@@ -24,9 +27,9 @@ typedef struct s_thread_arg
 ///////// MALLOC /////////
 void				illegal_number(void);
 void				test_malloc(void);
-void				loop_malloc(size_t size, int show_alloc);
 void				test_malloc_structures(void);
 void				test_ex(void);
+void				test_stress_alloc(void);
 
 ///////// FREE /////////
 void				test_free_simple(void);

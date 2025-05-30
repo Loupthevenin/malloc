@@ -47,10 +47,9 @@ void	tester_function(void)
 	test_reuse_free_block();
 }
 
-// TODO: loop_random size malloc
 void	tester_stress(void)
 {
-	loop_malloc(100, 0);
+	test_stress_alloc();
 }
 
 // UP
