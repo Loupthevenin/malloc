@@ -196,6 +196,7 @@ t_block	*alloc_block_in_existing_zone(t_zone *zone, size_t size, int zone_type,
 			log_trace_if(config,
 							"[MALLOC] Splitting and reusing free block");
 			new_block = (void *)((char *)(block + 1) + size);
+			new_block = (t_block *)align_ptr(new_block);
 			new_block->size = block->size - size - BLOCK_SIZE;
 			new_block->is_free = 1;
 			new_block->zone = block->zone;
