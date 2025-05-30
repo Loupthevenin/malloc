@@ -1,5 +1,14 @@
 #include "../includes/free.h"
 
+/**
+ * @brief is_valid_malloc_ptr - Vérifie si un pointeur a été alloué par malloc.
+ *
+ * Cette fonction parcourt toutes les zones et leurs blocs pour déterminer
+ * si le pointeur donné correspond à un bloc alloué connu.
+ *
+ * @param ptr Le pointeur utilisateur
+ * @return Un pointeur vers le bloc correspondant si trouvé, NULL sinon
+ */
 t_block	*is_valid_malloc_ptr(void *ptr)
 {
 	t_zone	*zone;
@@ -20,6 +29,20 @@ t_block	*is_valid_malloc_ptr(void *ptr)
 	return (NULL);
 }
 
+/**
+ * @brief merge_adjacent_blocks
+	- Fusionne les blocs libres voisins pour réduire la fragmentation.
+ *
+ * Si les blocs adjacents (précédent ou suivant) sont libres,
+	cette fonction fusionne
+
+	* avec le bloc actuel pour créer un bloc plus grand. Cela réduit la fragmentation
+ * de la zone et permet une meilleure réutilisation.
+ *
+ * @param block Le bloc récement libéré
+ * @param config Configuration debug pour les traces
+ * @return Le bloc si fusionné
+ */
 static t_block	*merge_adjacent_blocks(t_block *block, t_debug_config *config)
 {
 	t_block	*prev;
@@ -54,6 +77,19 @@ static t_block	*merge_adjacent_blocks(t_block *block, t_debug_config *config)
 	return (block);
 }
 
+/**
+ * @brief free_block
+	- Marque un bloc comme libre et tente de nettoyer la zone si possible.
+ *
+ * Cette fonction est utilisée uniquement pour les zones de type TINY/SMALL.
+ * - Marque le bloc comme libre.
+ * - Fusionne les blocs adjacents libres pour éviter la fragmentation.
+ * - Met à jour la taille utilisée de la zone.
+ * - Détruit la zone si elle devient totalement vide.
+ *
+ * @param block Pointeur vers le bloc à libérer
+ * @param config Configuration debug
+ */
 static void	free_block(t_block *block, t_debug_config *config)
 {
 	t_zone	*zone;
@@ -70,6 +106,18 @@ static void	free_block(t_block *block, t_debug_config *config)
 	}
 }
 
+/**
+ * @brief handle_free - Gère la libération réelle d'un bloc mémoire.
+ *
+ * Cette fonction est appelée par free après les vérifications de base.
+ * - Vérifie que le pointeur correspond bien à un bloc connu.
+ * - Ignore les doubles-libérations.
+ * - Unmap les zones LARGE (une zone = un bloc dans ce cas).
+ * - Libère les blocs standard : free_block().
+ *
+ * @param ptr Le pointeur utilisateur à libérer
+ * @param config Structure de configuration debug
+ */
 static void	handle_free(void *ptr, t_debug_config *config)
 {
 	t_block	*block;
@@ -89,6 +137,18 @@ static void	handle_free(void *ptr, t_debug_config *config)
 	free_block(block, config);
 }
 
+/**
+ * @brief free - Libère un bloc mémoire précédemment alloué avec malloc/realloc
+ *
+ * Cette fonction encapsule la libération d'un bloc en s'assurant que :
+ * - La mémoire est bien non-nulle.
+ * - Un environnement de debug est correctement initialisé.
+ * - Des conditions de test (MALLOC_FAIL) sont respectées.
+ *
+ * g_lock garantit une sécurité thread-safe lors de l'accès aux zones.
+ *
+ * @param ptr Pointeur vers le bloc à libérer
+ */
 void	free(void *ptr)
 {
 	t_debug_config	*config;
