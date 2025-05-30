@@ -14,6 +14,19 @@ static void	*handle_zero_size(void *ptr, t_debug_config *config)
 	return (NULL);
 }
 
+/**
+ * @brief realloc_block
+	- Gère la logique de réallocation d'un bloc mémoire existant.
+ *
+ * Si la taille demandée est inférieure ou égale à l'actuelle, aucun changement
+ * n'est effectué. Sinon, un nouveau bloc est alloué, les données sont copiées,
+ * et l'ancien bloc est libéré.
+ *
+ * @param ptr Le pointeur à reallouer
+ * @param size La nouvelle taille demandée
+ * @param config Configuration de debug
+ * @return Un nouveau pointeur vers la mémoire allouée, ou NULL en cas d'échec
+ */
 static void	*realloc_block(void *ptr, size_t size, t_debug_config *config)
 {
 	t_block	*old_block;
@@ -42,6 +55,18 @@ static void	*realloc_block(void *ptr, size_t size, t_debug_config *config)
 	return (result);
 }
 
+/**
+ * @brief realloc - Redimensionne un bloc mémoire existant.
+ *
+
+	* Cette fonction réalloue un bloc précédemment alloué avec `malloc` ou `realloc`.
+ * Elle respecte les cas limites comme un pointeur NULL
+ * ou une taille 0, et s'appuie sur un comportement défini par la norme.
+ *
+ * @param ptr Le pointeur vers la mémoire à réallouer
+ * @param size La nouvelle taille souhaitée
+ * @return Un pointeur vers le bloc réalloué, ou NULL en cas d'erreur
+ */
 void	*realloc(void *ptr, size_t size)
 {
 	t_debug_config	*config;
